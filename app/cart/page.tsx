@@ -200,6 +200,34 @@ export default function CartPage() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
               {/* Left Column: Cart Items List */}
               <div className="lg:col-span-8 space-y-4">
+                {/* Free Shipping Progress Bar */}
+                <div className="bg-white p-4 sm:p-5 rounded-3xl border border-neutral-200/80 shadow-2xs space-y-2.5">
+                  <div className="flex items-center justify-between text-xs font-bold">
+                    <div className="flex items-center gap-2">
+                      <Truck className="w-4 h-4 text-black" />
+                      {subtotal < 15000 ? (
+                        <span>До бесплатной доставки осталось <span className="font-mono text-black font-extrabold font-mono">{(15000 - subtotal).toLocaleString('ru-RU')} ₽</span></span>
+                      ) : (
+                        <span className="text-emerald-700 font-extrabold flex items-center gap-1">
+                          <Check className="w-4 h-4 text-emerald-600" />
+                          Поздравляем! Вам доступна БЕСПЛАТНАЯ курьерская доставка
+                        </span>
+                      )}
+                    </div>
+                    <span className="font-mono text-[11px] text-neutral-400 font-bold">
+                      {Math.min(100, Math.round((subtotal / 15000) * 100))}%
+                    </span>
+                  </div>
+                  <div className="w-full h-2.5 bg-neutral-100 rounded-full overflow-hidden p-0.5 border border-neutral-200/60">
+                    <motion.div
+                      className="h-full bg-black rounded-full"
+                      initial={{ width: 0 }}
+                      animate={{ width: `${Math.min(100, Math.round((subtotal / 15000) * 100))}%` }}
+                      transition={{ duration: 0.5, ease: 'easeOut' }}
+                    />
+                  </div>
+                </div>
+
                 <div className="space-y-3">
                   {cartItems.map((item) => (
                     <motion.div

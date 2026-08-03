@@ -169,6 +169,7 @@ export default function CatalogPage() {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedBrand, setSelectedBrand] = useState('All');
   const [selectedSize, setSelectedSize] = useState('All');
+  const [minPrice, setMinPrice] = useState<number>(0);
   const [priceRange, setPriceRange] = useState<number>(20000);
   const [onlySale, setOnlySale] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -182,17 +183,19 @@ export default function CatalogPage() {
     if (selectedCategory !== 'all') count++;
     if (selectedBrand !== 'All') count++;
     if (selectedSize !== 'All') count++;
+    if (minPrice > 0) count++;
     if (priceRange < 20000) count++;
     if (onlySale) count++;
     if (searchQuery.trim()) count++;
     return count;
-  }, [selectedCategory, selectedBrand, selectedSize, priceRange, onlySale, searchQuery]);
+  }, [selectedCategory, selectedBrand, selectedSize, minPrice, priceRange, onlySale, searchQuery]);
 
   // Reset all filters
   const resetFilters = () => {
     setSelectedCategory('all');
     setSelectedBrand('All');
     setSelectedSize('All');
+    setMinPrice(0);
     setPriceRange(20000);
     setOnlySale(false);
     setSearchQuery('');
@@ -206,6 +209,7 @@ export default function CatalogPage() {
         if (selectedCategory !== 'all' && p.category !== selectedCategory) return false;
         if (selectedBrand !== 'All' && p.brand.toLowerCase() !== selectedBrand.toLowerCase()) return false;
         if (selectedSize !== 'All' && !p.sizes.includes(selectedSize)) return false;
+        if (p.price < minPrice) return false;
         if (p.price > priceRange) return false;
         if (onlySale && !p.isSale) return false;
         if (searchQuery.trim() && !p.name.toLowerCase().includes(searchQuery.toLowerCase())) return false;
@@ -217,7 +221,7 @@ export default function CatalogPage() {
         if (sortBy === 'rating') return b.rating - a.rating;
         return b.id - a.id;
       });
-  }, [selectedCategory, selectedBrand, selectedSize, priceRange, onlySale, searchQuery, sortBy]);
+  }, [selectedCategory, selectedBrand, selectedSize, minPrice, priceRange, onlySale, searchQuery, sortBy]);
 
   return (
     <div className="min-h-screen flex flex-col bg-[#F7F7F6] text-[#0D0E10] select-none font-sans">
@@ -424,12 +428,42 @@ export default function CatalogPage() {
                       </div>
                     </div>
 
-                    {/* Price Slider */}
+                    {/* Price Slider & Manual Number Inputs */}
                     <div className="space-y-2">
                       <div className="flex items-center justify-between text-[11px]">
-                        <span className="font-extrabold uppercase tracking-wider text-neutral-900">До стоимости</span>
-                        <span className="font-extrabold text-black font-mono">{priceRange.toLocaleString('ru-RU')} ₽</span>
+                        <span className="font-extrabold uppercase tracking-wider text-neutral-900">Стоимость (₽)</span>
+                        <span className="font-extrabold text-black font-mono">до {priceRange.toLocaleString('ru-RU')} ₽</span>
                       </div>
+
+                      {/* Manual Price Inputs */}
+                      <div className="flex items-center gap-2">
+                        <div className="flex-1 relative">
+                          <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[10px] font-bold text-neutral-400 font-sans">от</span>
+                          <input
+                            type="number"
+                            min={0}
+                            max={priceRange}
+                            value={minPrice}
+                            onChange={(e) => setMinPrice(Number(e.target.value))}
+                            placeholder="0"
+                            className="w-full pl-7 pr-2 py-1.5 text-xs bg-neutral-100/90 rounded-xl focus:outline-none focus:ring-2 focus:ring-black font-mono font-bold"
+                          />
+                        </div>
+                        <span className="text-neutral-300 font-bold">—</span>
+                        <div className="flex-1 relative">
+                          <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[10px] font-bold text-neutral-400 font-sans">до</span>
+                          <input
+                            type="number"
+                            min={minPrice}
+                            max={20000}
+                            value={priceRange}
+                            onChange={(e) => setPriceRange(Number(e.target.value))}
+                            placeholder="20000"
+                            className="w-full pl-7 pr-2 py-1.5 text-xs bg-neutral-100/90 rounded-xl focus:outline-none focus:ring-2 focus:ring-black font-mono font-bold"
+                          />
+                        </div>
+                      </div>
+
                       <input
                         type="range"
                         min={1000}
@@ -437,7 +471,7 @@ export default function CatalogPage() {
                         step={500}
                         value={priceRange}
                         onChange={(e) => setPriceRange(Number(e.target.value))}
-                        className="w-full accent-black cursor-pointer"
+                        className="w-full accent-black cursor-pointer pt-1"
                       />
                     </div>
 
