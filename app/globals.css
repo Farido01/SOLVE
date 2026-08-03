@@ -2,7 +2,7 @@
 
 @layer base {
   :root {
-    --background: 60 3% 91%; /* #E8E8E6 */
+    --background: 40 10% 97%; /* #E8E8E6 */
     --foreground: 0 0% 5%;    /* #0D0E10 */
     --card: 0 0% 98%;
     --card-foreground: 0 0% 5%;
@@ -48,7 +48,7 @@
 
 body {
   font-family: 'Plus Jakarta Sans', sans-serif;
-  background-color: #E8E8E6;
+  background-color: #E8E8E4;
   color: #0D0E10;
   overflow-x: hidden;
   -webkit-tap-highlight-color: transparent;
