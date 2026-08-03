@@ -110,13 +110,13 @@ export default function Recommended() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.25 }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-4"
+            className="flex gap-4 overflow-x-auto no-scrollbar scroll-smooth py-1"
           >
             {filteredProducts.map((product) => (
               <ProductCard
                 key={product.id}
                 product={product}
-                className="w-full"
+                className="w-[160px] sm:w-[190px] md:w-[210px] flex-shrink-0"
               />
             ))}
           </motion.div>
