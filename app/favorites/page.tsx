@@ -154,13 +154,13 @@ export default function FavoritesPage() {
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0 }}
-                  className="bg-emerald-500 text-white px-5 py-3 rounded-2xl font-bold text-xs flex items-center justify-between shadow-md"
+                  className="bg-[#0D0E10] text-white px-5 py-3.5 rounded-2xl font-bold text-xs flex items-center justify-between shadow-lg border border-neutral-800"
                 >
                   <div className="flex items-center gap-2">
-                    <Check className="w-4 h-4" />
+                    <Check className="w-4 h-4 text-emerald-400" />
                     <span>{addedItemsAlert}</span>
                   </div>
-                  <Link href="/cart" className="underline hover:text-neutral-100 font-mono">
+                  <Link href="/cart" className="underline hover:text-neutral-300 font-mono text-xs">
                     Перейти в корзину →
                   </Link>
                 </motion.div>
@@ -218,18 +218,12 @@ export default function FavoritesPage() {
                       initial={{ opacity: 0, scale: 0.9 }}
                       animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0, scale: 0.8 }}
-                      className="relative group"
                     >
-                      <ProductCard product={product} />
-
-                      {/* Remove Button Overlay */}
-                      <button
-                        onClick={() => handleRemoveFavorite(product.id)}
-                        className="absolute top-2 right-2 z-20 w-8 h-8 rounded-full bg-white/95 backdrop-blur-xs border border-neutral-200 flex items-center justify-center text-red-500 hover:bg-red-500 hover:text-white transition-all shadow-sm"
-                        title="Удалить из избранного"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
+                      <ProductCard
+                        product={product}
+                        isFavorite={true}
+                        onRemove={() => handleRemoveFavorite(product.id)}
+                      />
                     </motion.div>
                   ))}
                 </AnimatePresence>
