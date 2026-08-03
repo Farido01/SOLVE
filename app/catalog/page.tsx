@@ -3,7 +3,7 @@
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { SlidersHorizontal, ArrowUpDown, X, Search, RotateCcw, ChevronRight, LayoutGrid, Grid2X2, Sparkles, Filter, Check } from 'lucide-react';
+import { SlidersHorizontal, ArrowUpDown, X, Search, RotateCcw, ChevronRight, LayoutGrid, Grid2X2, ShieldCheck, Sparkles, Filter } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import BottomNav from '@/components/BottomNav';
@@ -49,7 +49,7 @@ const mockProducts: CatalogProduct[] = [
   },
   {
     id: 3,
-    name: 'Брелок SOLVE Star Silver Chain',
+    name: 'Звёздный Брелок SOLVE Star Silver Chain',
     price: 790,
     category: 'keychains',
     brand: 'Solve',
@@ -224,36 +224,63 @@ export default function CatalogPage() {
       <Header />
 
       <main className="flex-1 mt-14 pb-28">
-        {/* Architectural Dark Editorial Header */}
-        <section className="bg-[#0D0E10] text-white border-b border-neutral-800 pt-9 pb-8 px-4 md:px-8">
-          <div className="max-w-6xl mx-auto space-y-4">
-            {/* Breadcrumbs */}
-            <div className="flex items-center gap-2 text-[11px] font-semibold text-neutral-400 uppercase tracking-wider font-sans">
-              <Link href="/" className="hover:text-white transition-colors">Главная</Link>
-              <ChevronRight className="w-3 h-3 text-neutral-600" />
-              <span className="text-white font-extrabold">Каталог</span>
+        {/* Ultra-Premium Full-Bleed Dark Editorial Banner */}
+        <section className="relative bg-[#0D0E10] text-white border-b border-neutral-800 pt-10 pb-10 px-4 md:px-8 overflow-hidden">
+          {/* Subtle Ambient Radial Glow */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-gradient-to-b from-neutral-800/20 via-neutral-900/10 to-transparent blur-3xl pointer-events-none" />
+
+          <div className="max-w-6xl mx-auto space-y-6 relative z-10">
+            {/* Top Breadcrumb & Metadata Badge */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 text-[11px] font-bold text-neutral-400 uppercase tracking-widest font-sans">
+                <Link href="/" className="hover:text-white transition-colors">Главная</Link>
+                <ChevronRight className="w-3 h-3 text-neutral-600" />
+                <span className="text-white">Каталог</span>
+              </div>
+
+              <div className="hidden sm:flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-widest text-neutral-400 font-mono bg-neutral-900/90 px-3.5 py-1.5 rounded-full border border-neutral-800">
+                <ShieldCheck className="w-3.5 h-3.5 text-white" />
+                <span>100% ORIGINAL GUARANTEE</span>
+              </div>
             </div>
 
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-              <div>
-                <span className="text-[10px] font-extrabold text-neutral-400 uppercase tracking-widest block mb-1">
-                  SOLVE ARCHIVE // COLLECTION 2026
-                </span>
-                <h1 className="font-display text-4xl sm:text-5xl md:text-7xl text-white uppercase tracking-wider leading-none">
-                  КАТАЛОГ ТОВАРОВ
+            {/* Title & Collection Stats */}
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pt-2">
+              <div className="space-y-2 max-w-2xl">
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
+                  <span className="text-[10px] font-extrabold uppercase tracking-[0.25em] text-neutral-400 font-mono">
+                    SOLVE ARCHIVE // SEASON 2026
+                  </span>
+                </div>
+                <h1 className="font-display text-5xl sm:text-6xl md:text-8xl text-white uppercase tracking-[0.06em] leading-none">
+                  КАТАЛОГ SOLVE
                 </h1>
+                <p className="text-xs md:text-sm text-neutral-400 font-normal leading-relaxed font-sans max-w-lg">
+                  Эксклюзивная подборка оригинальной стритвир-одежды, премиальных кроссовок и культовых аксессуаров с гарантийной автентификацией.
+                </p>
               </div>
 
               <div className="flex items-center gap-3">
-                <span className="text-xs font-extrabold text-neutral-300 font-mono bg-neutral-900 px-4 py-2 rounded-full border border-neutral-800 shadow-sm">
-                  {filteredProducts.length} ПОЗИЦИЙ
-                </span>
+                <div className="bg-neutral-900/90 border border-neutral-800 rounded-2xl p-4 flex items-center gap-4 shadow-xl">
+                  <div className="text-right">
+                    <span className="text-[10px] font-extrabold text-neutral-400 uppercase tracking-wider block">В наличии</span>
+                    <span className="font-display text-2xl tracking-wider text-white leading-none block mt-0.5 font-mono">
+                      {filteredProducts.length} POS
+                    </span>
+                  </div>
+                  <div className="w-[1px] h-8 bg-neutral-800" />
+                  <div className="text-left">
+                    <span className="text-[10px] font-extrabold text-neutral-400 uppercase tracking-wider block">Дроп #04</span>
+                    <span className="text-xs font-bold text-white uppercase block mt-0.5 font-sans">2026 RELEASE</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Sticky Filter & Category Header */}
+        {/* Refined Sticky Controls Bar */}
         <div className="sticky top-14 z-30 bg-[#F7F7F6]/95 backdrop-blur-md border-b border-neutral-200/80 py-3.5 px-4 md:px-8">
           <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
             {/* Category Quick Pills */}
@@ -381,7 +408,7 @@ export default function CatalogPage() {
           {/* Main Grid & Desktop Sidebar */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             {/* Desktop Filters Sidebar */}
-            <aside className="hidden lg:block lg:col-span-3 bg-white p-6 rounded-3xl border border-neutral-200/80 shadow-xs space-y-6 sticky top-36">
+            <aside className="hidden lg:block lg:col-span-3 bg-white p-6 rounded-3xl border border-neutral-200/80 shadow-2xs space-y-6 sticky top-36">
               <div className="flex items-center justify-between pb-3.5 border-b border-neutral-100">
                 <span className="font-display text-xl tracking-wider text-[#0D0E10] uppercase">ФИЛЬТРЫ</span>
                 {activeFilterCount > 0 && (
