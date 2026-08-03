@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { Menu, Search, ShoppingBag, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
@@ -24,9 +25,9 @@ export default function Header() {
         </Button>
 
         {/* Brand Logo */}
-        <a href="#" className="font-display text-2xl tracking-[0.2em] text-[#0D0E10] uppercase hover:opacity-80 transition-opacity">
+        <Link href="/" className="font-display text-2xl tracking-[0.2em] text-[#0D0E10] uppercase hover:opacity-80 transition-opacity">
           SOLVE
-        </a>
+        </Link>
 
         {/* Action Icons */}
         <div className="flex items-center gap-1">
@@ -106,7 +107,9 @@ export default function Header() {
             >
               <div>
                 <div className="flex items-center justify-between mb-8">
-                  <span className="font-display text-3xl tracking-widest text-black">SOLVE</span>
+                  <Link href="/" onClick={() => setIsMenuOpen(false)} className="font-display text-3xl tracking-widest text-black">
+                    SOLVE
+                  </Link>
                   <Button
                     variant="ghost"
                     size="icon"
@@ -119,28 +122,28 @@ export default function Header() {
                 </div>
 
                 <nav className="flex flex-col gap-3 text-sm font-semibold text-neutral-900 font-sans">
-                  <a href="#" className="py-2.5 border-b border-neutral-200 hover:text-neutral-500 transition-colors">
-                    НОВАЯ КОЛЛЕКЦИЯ
-                  </a>
-                  <a href="#" className="py-2.5 border-b border-neutral-200 hover:text-neutral-500 transition-colors">
+                  <Link href="/catalog" onClick={() => setIsMenuOpen(false)} className="py-2.5 border-b border-neutral-200 hover:text-neutral-500 transition-colors">
+                    ВЕСЬ КАТАЛОГ
+                  </Link>
+                  <Link href="/catalog" onClick={() => setIsMenuOpen(false)} className="py-2.5 border-b border-neutral-200 hover:text-neutral-500 transition-colors">
                     Одежда
-                  </a>
-                  <a href="#" className="py-2.5 border-b border-neutral-200 hover:text-neutral-500 transition-colors">
+                  </Link>
+                  <Link href="/catalog" onClick={() => setIsMenuOpen(false)} className="py-2.5 border-b border-neutral-200 hover:text-neutral-500 transition-colors">
                     Кроссовки
-                  </a>
-                  <a href="#" className="py-2.5 border-b border-neutral-200 hover:text-neutral-500 transition-colors">
+                  </Link>
+                  <Link href="/catalog" onClick={() => setIsMenuOpen(false)} className="py-2.5 border-b border-neutral-200 hover:text-neutral-500 transition-colors">
                     Брелоки
-                  </a>
-                  <a href="#" className="py-2.5 border-b border-neutral-200 hover:text-neutral-500 transition-colors">
+                  </Link>
+                  <Link href="/catalog" onClick={() => setIsMenuOpen(false)} className="py-2.5 border-b border-neutral-200 hover:text-neutral-500 transition-colors">
                     Аксессуары
-                  </a>
-                  <a href="#" className="py-2.5 border-b border-neutral-200 hover:text-neutral-500 transition-colors">
+                  </Link>
+                  <Link href="/catalog" onClick={() => setIsMenuOpen(false)} className="py-2.5 border-b border-neutral-200 hover:text-neutral-500 transition-colors">
                     Сумки
-                  </a>
-                  <a href="#" className="py-2.5 text-neutral-900 font-bold flex items-center justify-between">
+                  </Link>
+                  <Link href="/catalog" onClick={() => setIsMenuOpen(false)} className="py-2.5 text-neutral-900 font-bold flex items-center justify-between">
                     <span>РАСПРОДАЖА</span>
                     <span className="px-2 py-0.5 bg-black text-white text-[10px] rounded font-mono">-40%</span>
-                  </a>
+                  </Link>
                 </nav>
               </div>
 
