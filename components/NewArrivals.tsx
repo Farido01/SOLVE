@@ -94,7 +94,11 @@ export default function NewArrivals() {
           className="flex gap-4 sm:gap-5 overflow-x-auto no-scrollbar scroll-smooth py-1 md:justify-start"
         >
           {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
+            <ProductCard
+              key={product.id}
+              product={product}
+              className="w-[160px] sm:w-[190px] md:w-[210px] flex-shrink-0"
+            />
           ))}
         </div>
       </div>

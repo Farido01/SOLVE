@@ -110,12 +110,14 @@ export default function Recommended() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.25 }}
-            className="flex gap-4 overflow-x-auto no-scrollbar sm:grid sm:grid-cols-2 md:grid-cols-4 sm:overflow-visible"
+            className="grid grid-cols-2 md:grid-cols-4 gap-4"
           >
             {filteredProducts.map((product) => (
-              <div key={product.id} className="relative flex-shrink-0">
-                <ProductCard product={product} />
-              </div>
+              <ProductCard
+                key={product.id}
+                product={product}
+                className="w-full"
+              />
             ))}
           </motion.div>
         </AnimatePresence>
