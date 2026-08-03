@@ -224,14 +224,14 @@ export default function CatalogPage() {
       <Header />
 
       <main className="flex-1 mt-14 pb-28">
-        {/* Architectural Editorial Header */}
-        <section className="bg-white border-b border-neutral-200/80 pt-8 pb-7 px-4 md:px-8">
+        {/* Architectural Dark Editorial Header */}
+        <section className="bg-[#0D0E10] text-white border-b border-neutral-800 pt-9 pb-8 px-4 md:px-8">
           <div className="max-w-6xl mx-auto space-y-4">
             {/* Breadcrumbs */}
             <div className="flex items-center gap-2 text-[11px] font-semibold text-neutral-400 uppercase tracking-wider font-sans">
-              <Link href="/" className="hover:text-black transition-colors">Главная</Link>
-              <ChevronRight className="w-3 h-3 text-neutral-300" />
-              <span className="text-black font-extrabold">Каталог</span>
+              <Link href="/" className="hover:text-white transition-colors">Главная</Link>
+              <ChevronRight className="w-3 h-3 text-neutral-600" />
+              <span className="text-white font-extrabold">Каталог</span>
             </div>
 
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
@@ -239,13 +239,13 @@ export default function CatalogPage() {
                 <span className="text-[10px] font-extrabold text-neutral-400 uppercase tracking-widest block mb-1">
                   SOLVE ARCHIVE // COLLECTION 2026
                 </span>
-                <h1 className="font-display text-4xl sm:text-5xl md:text-7xl text-[#0D0E10] uppercase tracking-wider leading-none">
+                <h1 className="font-display text-4xl sm:text-5xl md:text-7xl text-white uppercase tracking-wider leading-none">
                   КАТАЛОГ ТОВАРОВ
                 </h1>
               </div>
 
               <div className="flex items-center gap-3">
-                <span className="text-xs font-extrabold text-neutral-800 font-mono bg-[#F7F7F6] px-4 py-2 rounded-full border border-neutral-200 shadow-2xs">
+                <span className="text-xs font-extrabold text-neutral-300 font-mono bg-neutral-900 px-4 py-2 rounded-full border border-neutral-800 shadow-sm">
                   {filteredProducts.length} ПОЗИЦИЙ
                 </span>
               </div>
