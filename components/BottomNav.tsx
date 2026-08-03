@@ -34,7 +34,7 @@ const navItems: NavItem[] = [
   },
   {
     id: 'cart',
-    href: '#',
+    href: '/cart',
     label: 'Корзина',
     icon: <ShoppingBag className="w-5 h-5" />,
     badge: 2,

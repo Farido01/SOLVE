@@ -41,17 +41,19 @@ export default function Header() {
             <Search className="w-5 h-5" />
           </Button>
 
-          <Button
-            variant="ghost"
-            size="icon"
-            aria-label="Корзина"
-            className="relative text-neutral-900 hover:bg-neutral-200/60 min-h-[44px] min-w-[44px]"
-          >
-            <ShoppingBag className="w-5 h-5" />
-            <span className="absolute top-1.5 right-1.5 w-4 h-4 bg-black text-white text-[10px] font-bold rounded-full flex items-center justify-center font-sans">
-              2
-            </span>
-          </Button>
+          <Link href="/cart">
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label="Корзина"
+              className="relative text-neutral-900 hover:bg-neutral-200/60 min-h-[44px] min-w-[44px]"
+            >
+              <ShoppingBag className="w-5 h-5" />
+              <span className="absolute top-1.5 right-1.5 w-4 h-4 bg-black text-white text-[10px] font-bold rounded-full flex items-center justify-center font-sans">
+                2
+              </span>
+            </Button>
+          </Link>
         </div>
       </header>
 
