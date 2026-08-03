@@ -3,7 +3,7 @@
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { SlidersHorizontal, ArrowUpDown, X, Search, RotateCcw, ChevronRight, LayoutGrid, Grid2X2, Check, Filter } from 'lucide-react';
+import { SlidersHorizontal, ArrowUpDown, X, Search, RotateCcw, ChevronRight, LayoutGrid, Grid2X2, Filter, ChevronDown } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import BottomNav from '@/components/BottomNav';
@@ -173,7 +173,7 @@ export default function CatalogPage() {
   const [onlySale, setOnlySale] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState<'popular' | 'price-asc' | 'price-desc' | 'rating'>('popular');
-  const [isFilterDrawerOpen, setIsFilterDrawerOpen] = useState(false);
+  const [isFilterPanelOpen, setIsFilterPanelOpen] = useState(false);
   const [gridCols, setGridCols] = useState<3 | 4>(4);
 
   // Active filter count
@@ -234,7 +234,7 @@ export default function CatalogPage() {
               <span className="text-black font-extrabold">Каталог</span>
             </div>
 
-            {/* Main Header & Highlight Card */}
+            {/* Main Header & Lighter Highlight Card */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center pt-1">
               {/* Left Column: Pure Title Only */}
               <div className="lg:col-span-7">
@@ -279,7 +279,7 @@ export default function CatalogPage() {
           </div>
         </section>
 
-        {/* Refined Sticky Category & Controls Bar */}
+        {/* Refined Sticky Controls Bar */}
         <div className="sticky top-14 z-30 bg-[#F7F7F6]/95 backdrop-blur-md border-b border-neutral-200/80 py-3.5 px-4 md:px-8">
           <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
             {/* Category Quick Pills */}
@@ -302,20 +302,27 @@ export default function CatalogPage() {
               })}
             </div>
 
-            {/* Controls Bar: Filter Drawer Trigger, Sort Dropdown, Grid Switcher */}
+            {/* Controls Bar: Smooth Inline Filter Toggle, Sort, Grid */}
             <div className="flex items-center gap-2 justify-between md:justify-end">
-              {/* Universal Filter Button (Desktop & Mobile) */}
+              {/* Toggle Inline Filter Panel */}
               <button
-                onClick={() => setIsFilterDrawerOpen(true)}
-                className="flex items-center gap-2 px-4 py-2 bg-black text-white rounded-full text-xs font-extrabold hover:bg-neutral-800 transition-colors shadow-2xs"
+                onClick={() => setIsFilterPanelOpen(!isFilterPanelOpen)}
+                className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-extrabold transition-all border ${
+                  isFilterPanelOpen
+                    ? 'bg-black text-white border-black shadow-sm'
+                    : 'bg-white text-neutral-900 border-neutral-200 hover:border-neutral-400 shadow-2xs'
+                }`}
               >
                 <SlidersHorizontal className="w-3.5 h-3.5" />
                 <span>ФИЛЬТРЫ</span>
                 {activeFilterCount > 0 && (
-                  <span className="w-4 h-4 rounded-full bg-white text-black text-[10px] flex items-center justify-center font-bold">
+                  <span className={`w-4 h-4 rounded-full text-[10px] flex items-center justify-center font-bold ${
+                    isFilterPanelOpen ? 'bg-white text-black' : 'bg-black text-white'
+                  }`}>
                     {activeFilterCount}
                   </span>
                 )}
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isFilterPanelOpen ? 'rotate-180' : ''}`} />
               </button>
 
               {/* Sort Selector Dropdown */}
@@ -358,9 +365,140 @@ export default function CatalogPage() {
               </div>
             </div>
           </div>
+
+          {/* Smooth Inline Expandable Filter Bar (Zero Backdrop, Realtime Filter) */}
+          <AnimatePresence>
+            {isFilterPanelOpen && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.25, ease: 'easeInOut' }}
+                className="overflow-hidden"
+              >
+                <div className="max-w-6xl mx-auto mt-3.5 p-5 bg-white rounded-3xl border border-neutral-200/90 shadow-sm space-y-5 font-sans">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {/* Search Field */}
+                    <div className="space-y-2">
+                      <span className="text-[11px] font-extrabold uppercase tracking-wider text-neutral-900 block">Поиск</span>
+                      <div className="relative">
+                        <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
+                        <input
+                          type="text"
+                          value={searchQuery}
+                          onChange={(e) => setSearchQuery(e.target.value)}
+                          placeholder="Название..."
+                          className="w-full pl-10 pr-8 py-2 text-xs bg-neutral-100/90 rounded-xl focus:outline-none focus:ring-2 focus:ring-black font-sans"
+                        />
+                        {searchQuery && (
+                          <button
+                            onClick={() => setSearchQuery('')}
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-black"
+                          >
+                            <X className="w-3.5 h-3.5" />
+                          </button>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Brands */}
+                    <div className="space-y-2">
+                      <span className="text-[11px] font-extrabold uppercase tracking-wider text-neutral-900 block">Бренд</span>
+                      <div className="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto no-scrollbar">
+                        {brandsList.map((brand) => {
+                          const isSelected = selectedBrand === brand;
+                          return (
+                            <button
+                              key={brand}
+                              onClick={() => setSelectedBrand(brand)}
+                              className={`px-3 py-1 rounded-xl text-xs font-bold transition-all border ${
+                                isSelected
+                                  ? 'bg-black text-white border-black'
+                                  : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200 border-neutral-200'
+                              }`}
+                            >
+                              {brand}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    {/* Price Slider */}
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between text-[11px]">
+                        <span className="font-extrabold uppercase tracking-wider text-neutral-900">До стоимости</span>
+                        <span className="font-extrabold text-black font-mono">{priceRange.toLocaleString('ru-RU')} ₽</span>
+                      </div>
+                      <input
+                        type="range"
+                        min={1000}
+                        max={20000}
+                        step={500}
+                        value={priceRange}
+                        onChange={(e) => setPriceRange(Number(e.target.value))}
+                        className="w-full accent-black cursor-pointer"
+                      />
+                    </div>
+
+                    {/* Size Selector */}
+                    <div className="space-y-2">
+                      <span className="text-[11px] font-extrabold uppercase tracking-wider text-neutral-900 block">Размер</span>
+                      <div className="flex flex-wrap gap-1.5">
+                        <button
+                          onClick={() => setSelectedSize('All')}
+                          className={`px-2.5 py-1 rounded-lg text-xs font-bold border transition-all ${
+                            selectedSize === 'All'
+                              ? 'bg-black text-white border-black'
+                              : 'bg-neutral-100 text-neutral-700 border-neutral-200 hover:bg-neutral-200'
+                          }`}
+                        >
+                          Все
+                        </button>
+                        {sizesList.map((sz) => (
+                          <button
+                            key={sz}
+                            onClick={() => setSelectedSize(sz)}
+                            className={`px-2.5 py-1 rounded-lg text-xs font-bold border transition-all ${
+                              selectedSize === sz
+                                ? 'bg-black text-white border-black'
+                                : 'bg-neutral-100 text-neutral-700 border-neutral-200 hover:bg-neutral-200'
+                            }`}
+                          >
+                            {sz}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Options & Reset Footer */}
+                  <div className="flex items-center justify-between pt-3 border-t border-neutral-100 text-xs">
+                    <label className="flex items-center gap-2 cursor-pointer select-none">
+                      <input
+                        type="checkbox"
+                        checked={onlySale}
+                        onChange={(e) => setOnlySale(e.target.checked)}
+                        className="w-4 h-4 accent-black rounded cursor-pointer"
+                      />
+                      <span className="font-extrabold text-neutral-900">Только товары со скидкой</span>
+                    </label>
+
+                    <button
+                      onClick={resetFilters}
+                      className="flex items-center gap-1 font-bold text-neutral-500 hover:text-black transition-colors"
+                    >
+                      <RotateCcw className="w-3.5 h-3.5" />
+                      <span>Сбросить фильтры</span>
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
-        {/* Content Workspace (Full Width Grid) */}
+        {/* Content Workspace */}
         <div className="max-w-6xl mx-auto px-4 md:px-8 pt-6">
           {/* Active Filter Chips */}
           {activeFilterCount > 0 && (
@@ -435,181 +573,6 @@ export default function CatalogPage() {
           </div>
         </div>
       </main>
-
-      {/* Ultra-Sleek Slide-Over Filter Panel Drawer (Desktop & Mobile) */}
-      <AnimatePresence>
-        {isFilterDrawerOpen && (
-          <>
-            {/* Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsFilterDrawerOpen(false)}
-              className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs"
-            />
-
-            {/* Right Slide-Over Panel */}
-            <motion.div
-              initial={{ x: '100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '100%' }}
-              transition={{ type: 'spring', damping: 28, stiffness: 280 }}
-              className="fixed top-0 right-0 bottom-0 z-50 w-full max-w-md bg-white shadow-2xl flex flex-col justify-between font-sans border-l border-neutral-200"
-            >
-              {/* Drawer Header */}
-              <div className="p-6 border-b border-neutral-100 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="font-display text-2xl tracking-wider text-black uppercase">ФИЛЬТРЫ ТОВАРОВ</span>
-                  {activeFilterCount > 0 && (
-                    <span className="w-5 h-5 rounded-full bg-black text-white text-[10px] flex items-center justify-center font-bold font-mono">
-                      {activeFilterCount}
-                    </span>
-                  )}
-                </div>
-                <button
-                  onClick={() => setIsFilterDrawerOpen(false)}
-                  className="p-2 text-neutral-400 hover:text-black rounded-full hover:bg-neutral-100 transition-colors"
-                  aria-label="Закрыть"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-
-              {/* Drawer Body - Scrollable Content */}
-              <div className="p-6 space-y-6 flex-1 overflow-y-auto">
-                {/* Search Input */}
-                <div className="space-y-2">
-                  <span className="text-xs font-extrabold uppercase text-neutral-900 block">Поиск по названию</span>
-                  <div className="relative">
-                    <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
-                    <input
-                      type="text"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      placeholder="Худи, кроссовки, кепка..."
-                      className="w-full pl-10 pr-8 py-2.5 text-xs bg-neutral-100/90 rounded-xl focus:outline-none focus:ring-2 focus:ring-black font-sans"
-                    />
-                    {searchQuery && (
-                      <button
-                        onClick={() => setSearchQuery('')}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-black"
-                      >
-                        <X className="w-3.5 h-3.5" />
-                      </button>
-                    )}
-                  </div>
-                </div>
-
-                {/* Brands Selection */}
-                <div className="space-y-2.5">
-                  <span className="text-xs font-extrabold uppercase text-neutral-900 block">Бренды</span>
-                  <div className="flex flex-wrap gap-2">
-                    {brandsList.map((brand) => {
-                      const isSelected = selectedBrand === brand;
-                      return (
-                        <button
-                          key={brand}
-                          onClick={() => setSelectedBrand(brand)}
-                          className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all border ${
-                            isSelected
-                              ? 'bg-black text-white border-black shadow-xs'
-                              : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200 border-neutral-200'
-                          }`}
-                        >
-                          {brand}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                {/* Price Range Slider */}
-                <div className="space-y-2.5">
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="font-extrabold uppercase text-neutral-900">Максимальная цена</span>
-                    <span className="font-extrabold text-black font-mono">{priceRange.toLocaleString('ru-RU')} ₽</span>
-                  </div>
-                  <input
-                    type="range"
-                    min={1000}
-                    max={20000}
-                    step={500}
-                    value={priceRange}
-                    onChange={(e) => setPriceRange(Number(e.target.value))}
-                    className="w-full accent-black cursor-pointer"
-                  />
-                  <div className="flex justify-between text-[10px] font-mono text-neutral-400">
-                    <span>1 000 ₽</span>
-                    <span>20 000 ₽</span>
-                  </div>
-                </div>
-
-                {/* Size Selector */}
-                <div className="space-y-2.5">
-                  <span className="text-xs font-extrabold uppercase text-neutral-900 block">Размер</span>
-                  <div className="grid grid-cols-4 gap-2">
-                    <button
-                      onClick={() => setSelectedSize('All')}
-                      className={`py-2 rounded-xl text-xs font-bold text-center border transition-all ${
-                        selectedSize === 'All'
-                          ? 'bg-black text-white border-black'
-                          : 'bg-neutral-100 text-neutral-700 border-neutral-200 hover:bg-neutral-200'
-                      }`}
-                    >
-                      Все
-                    </button>
-                    {sizesList.map((sz) => (
-                      <button
-                        key={sz}
-                        onClick={() => setSelectedSize(sz)}
-                        className={`py-2 rounded-xl text-xs font-bold text-center border transition-all ${
-                          selectedSize === sz
-                            ? 'bg-black text-white border-black'
-                            : 'bg-neutral-100 text-neutral-700 border-neutral-200 hover:bg-neutral-200'
-                        }`}
-                      >
-                        {sz}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Discount Switch */}
-                <div className="pt-3 border-t border-neutral-100">
-                  <label className="flex items-center justify-between cursor-pointer select-none">
-                    <span className="text-xs font-extrabold uppercase text-neutral-900">Только со скидкой</span>
-                    <input
-                      type="checkbox"
-                      checked={onlySale}
-                      onChange={(e) => setOnlySale(e.target.checked)}
-                      className="w-4 h-4 accent-black rounded cursor-pointer"
-                    />
-                  </label>
-                </div>
-              </div>
-
-              {/* Drawer Footer Actions */}
-              <div className="p-6 border-t border-neutral-100 bg-[#F7F7F6] flex items-center gap-3">
-                <Button
-                  variant="outline"
-                  onClick={resetFilters}
-                  className="flex-1 py-3 text-xs font-bold rounded-xl border-neutral-300"
-                >
-                  <RotateCcw className="w-3.5 h-3.5 mr-1.5" />
-                  Сбросить
-                </Button>
-                <Button
-                  onClick={() => setIsFilterDrawerOpen(false)}
-                  className="flex-1 py-3 bg-black text-white text-xs font-bold rounded-xl shadow-md hover:bg-neutral-800"
-                >
-                  Показать ({filteredProducts.length})
-                </Button>
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
 
       <Footer />
       <BottomNav />
