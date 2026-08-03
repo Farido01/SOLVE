@@ -28,7 +28,7 @@ const navItems: NavItem[] = [
   },
   {
     id: 'favorites',
-    href: '#',
+    href: '/favorites',
     label: 'Избранное',
     icon: <Heart className="w-5 h-5" />,
   },
