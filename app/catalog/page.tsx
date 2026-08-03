@@ -224,60 +224,30 @@ export default function CatalogPage() {
       <Header />
 
       <main className="flex-1 mt-14 pb-28">
-        {/* Rich Multi-Layered Editorial Banner */}
+        {/* Minimalist Editorial Banner */}
         <section className="bg-white border-b border-neutral-200/90 pt-8 pb-8 px-4 md:px-8 relative overflow-hidden bg-[radial-gradient(#e2e4e8_1px,transparent_1px)] [background-size:24px_24px]">
-          <div className="max-w-6xl mx-auto space-y-6 relative z-10">
-            {/* Top Breadcrumb & Metadata Badge */}
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2 text-[11px] font-bold text-neutral-400 uppercase tracking-widest font-sans">
-                <Link href="/" className="hover:text-black transition-colors">Главная</Link>
-                <ChevronRight className="w-3 h-3 text-neutral-300" />
-                <span className="text-black font-extrabold">Каталог</span>
-              </div>
-
-              <div className="hidden sm:flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-widest text-neutral-600 font-mono bg-[#F7F7F6] px-3.5 py-1.5 rounded-full border border-neutral-200 shadow-2xs">
-                <ShieldCheck className="w-3.5 h-3.5 text-black" />
-                <span>100% AUTHENTIC GUARANTEE</span>
-              </div>
+          <div className="max-w-6xl mx-auto space-y-4 relative z-10">
+            {/* Top Breadcrumbs */}
+            <div className="flex items-center gap-2 text-[11px] font-bold text-neutral-400 uppercase tracking-widest font-sans">
+              <Link href="/" className="hover:text-black transition-colors">Главная</Link>
+              <ChevronRight className="w-3 h-3 text-neutral-300" />
+              <span className="text-black font-extrabold">Каталог</span>
             </div>
 
-            {/* Main Header & Highlight Hero Card */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-              {/* Left Column: Title & Subtitle */}
-              <div className="lg:col-span-7 space-y-3">
-                <div className="inline-flex items-center gap-2 px-3 py-1 bg-black text-white text-[10px] font-extrabold uppercase tracking-widest rounded-full font-mono">
-                  <Sparkles className="w-3 h-3 text-yellow-400" />
-                  <span>COLLECTION 2026 // DROP #04</span>
-                </div>
-                
+            {/* Main Header & Lighter Highlight Card */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center pt-1">
+              {/* Left Column: Pure Title Only */}
+              <div className="lg:col-span-7">
                 <h1 className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-[#0D0E10] uppercase tracking-[0.05em] leading-[0.9]">
                   КАТАЛОГ SOLVE
                 </h1>
-                
-                <p className="text-xs md:text-sm text-neutral-600 font-normal leading-relaxed font-sans max-w-lg pt-1">
-                  Полный каталог оригинальной уличной одежды, лимитированных кроссовок, сумок и фирменных брелоков с двойной проверкой оригинальности.
-                </p>
-
-                <div className="flex flex-wrap items-center gap-4 pt-2 text-xs font-bold text-neutral-700">
-                  <div className="flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                    <span>В наличии {filteredProducts.length} позиций</span>
-                  </div>
-                  <span className="text-neutral-300">•</span>
-                  <span>Гарантия подлинности</span>
-                  <span className="text-neutral-300">•</span>
-                  <span>Примерка перед покупкой</span>
-                </div>
               </div>
 
-              {/* Right Column: Featured Drop Hero Highlight Card */}
+              {/* Right Column: Lighter Featured Drop Hero Highlight Card */}
               <div className="lg:col-span-5">
-                <div className="bg-[#0D0E10] text-white p-5 rounded-3xl relative overflow-hidden shadow-xl border border-neutral-800 group hover:border-neutral-700 transition-all">
-                  {/* Subtle Background Lighting */}
-                  <div className="absolute top-0 right-0 w-48 h-48 bg-neutral-800/40 rounded-full blur-3xl pointer-events-none" />
-
+                <div className="bg-[#EBECEE] text-neutral-900 p-5 rounded-3xl relative overflow-hidden border border-neutral-300/80 shadow-2xs group hover:border-neutral-400 transition-all">
                   <div className="relative z-10 flex items-center gap-4">
-                    <div className="w-20 h-24 sm:w-24 sm:h-28 rounded-2xl overflow-hidden bg-neutral-900 border border-neutral-800 shrink-0">
+                    <div className="w-20 h-24 sm:w-24 sm:h-28 rounded-2xl overflow-hidden bg-white border border-neutral-300/80 shrink-0">
                       <img
                         src="/images/cat-clothing.png"
                         alt="Featured Drop"
@@ -286,18 +256,18 @@ export default function CatalogPage() {
                     </div>
 
                     <div className="space-y-1.5 flex-1">
-                      <span className="text-[9px] font-extrabold uppercase tracking-widest text-neutral-400 font-mono bg-neutral-900 px-2.5 py-0.5 rounded-full border border-neutral-800">
+                      <span className="text-[9px] font-extrabold uppercase tracking-widest text-neutral-800 font-mono bg-white px-2.5 py-0.5 rounded-full border border-neutral-300/80">
                         ФЛАГМАН ДРОПА
                       </span>
-                      <h4 className="font-display text-xl sm:text-2xl text-white tracking-wider uppercase leading-none">
+                      <h4 className="font-display text-xl sm:text-2xl text-[#0D0E10] tracking-wider uppercase leading-none">
                         SOLVE CHAOS HOODIE
                       </h4>
-                      <p className="text-[11px] text-neutral-400 font-sans line-clamp-1">
+                      <p className="text-[11px] text-neutral-600 font-sans line-clamp-1">
                         Oversized фит • Плотный флис 460г
                       </p>
                       <div className="flex items-center justify-between pt-1">
-                        <span className="text-sm font-extrabold text-white font-mono">4 990 ₽</span>
-                        <span className="text-[10px] font-bold text-neutral-300 underline group-hover:text-white transition-colors">
+                        <span className="text-sm font-extrabold text-[#0D0E10] font-mono">4 990 ₽</span>
+                        <span className="text-[10px] font-bold text-neutral-900 underline group-hover:text-black transition-colors">
                           Смотреть →
                         </span>
                       </div>
