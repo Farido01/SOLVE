@@ -224,55 +224,52 @@ export default function CatalogPage() {
       <Header />
 
       <main className="flex-1 mt-14 pb-28">
-        {/* Ultra-Premium Full-Bleed Dark Editorial Banner */}
-        <section className="relative bg-[#0D0E10] text-white border-b border-neutral-800 pt-10 pb-10 px-4 md:px-8 overflow-hidden">
-          {/* Subtle Ambient Radial Glow */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-gradient-to-b from-neutral-800/20 via-neutral-900/10 to-transparent blur-3xl pointer-events-none" />
-
-          <div className="max-w-6xl mx-auto space-y-6 relative z-10">
+        {/* Ultra-Clean Light Editorial Banner */}
+        <section className="bg-[#F7F7F6] border-b border-neutral-200/90 pt-9 pb-8 px-4 md:px-8">
+          <div className="max-w-6xl mx-auto space-y-6">
             {/* Top Breadcrumb & Metadata Badge */}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2 text-[11px] font-bold text-neutral-400 uppercase tracking-widest font-sans">
-                <Link href="/" className="hover:text-white transition-colors">Главная</Link>
-                <ChevronRight className="w-3 h-3 text-neutral-600" />
-                <span className="text-white">Каталог</span>
+                <Link href="/" className="hover:text-black transition-colors">Главная</Link>
+                <ChevronRight className="w-3 h-3 text-neutral-300" />
+                <span className="text-black font-extrabold">Каталог</span>
               </div>
 
-              <div className="hidden sm:flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-widest text-neutral-400 font-mono bg-neutral-900/90 px-3.5 py-1.5 rounded-full border border-neutral-800">
-                <ShieldCheck className="w-3.5 h-3.5 text-white" />
+              <div className="hidden sm:flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-widest text-neutral-500 font-mono bg-white px-3.5 py-1.5 rounded-full border border-neutral-200 shadow-2xs">
+                <ShieldCheck className="w-3.5 h-3.5 text-black" />
                 <span>100% ORIGINAL GUARANTEE</span>
               </div>
             </div>
 
             {/* Title & Collection Stats */}
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pt-2">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
               <div className="space-y-2 max-w-2xl">
                 <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
+                  <span className="w-2 h-2 rounded-full bg-black animate-pulse" />
                   <span className="text-[10px] font-extrabold uppercase tracking-[0.25em] text-neutral-400 font-mono">
                     SOLVE ARCHIVE // SEASON 2026
                   </span>
                 </div>
-                <h1 className="font-display text-5xl sm:text-6xl md:text-8xl text-white uppercase tracking-[0.06em] leading-none">
+                <h1 className="font-display text-5xl sm:text-6xl md:text-8xl text-[#0D0E10] uppercase tracking-[0.06em] leading-none">
                   КАТАЛОГ SOLVE
                 </h1>
-                <p className="text-xs md:text-sm text-neutral-400 font-normal leading-relaxed font-sans max-w-lg">
-                  Эксклюзивная подборка оригинальной стритвир-одежды, премиальных кроссовок и культовых аксессуаров с гарантийной автентификацией.
+                <p className="text-xs md:text-sm text-neutral-500 font-normal leading-relaxed font-sans max-w-lg">
+                  Эксклюзивная подборка оригинальной стритвир-одежды, премиальных кроссовок и культовых аксессуаров с гарантийной аутентификацией.
                 </p>
               </div>
 
               <div className="flex items-center gap-3">
-                <div className="bg-neutral-900/90 border border-neutral-800 rounded-2xl p-4 flex items-center gap-4 shadow-xl">
+                <div className="bg-white border border-neutral-200/90 rounded-2xl p-4 flex items-center gap-4 shadow-2xs">
                   <div className="text-right">
                     <span className="text-[10px] font-extrabold text-neutral-400 uppercase tracking-wider block">В наличии</span>
-                    <span className="font-display text-2xl tracking-wider text-white leading-none block mt-0.5 font-mono">
+                    <span className="font-display text-2xl tracking-wider text-[#0D0E10] leading-none block mt-0.5 font-mono">
                       {filteredProducts.length} POS
                     </span>
                   </div>
-                  <div className="w-[1px] h-8 bg-neutral-800" />
+                  <div className="w-[1px] h-8 bg-neutral-200" />
                   <div className="text-left">
                     <span className="text-[10px] font-extrabold text-neutral-400 uppercase tracking-wider block">Дроп #04</span>
-                    <span className="text-xs font-bold text-white uppercase block mt-0.5 font-sans">2026 RELEASE</span>
+                    <span className="text-xs font-bold text-neutral-900 uppercase block mt-0.5 font-sans">2026 RELEASE</span>
                   </div>
                 </div>
               </div>
