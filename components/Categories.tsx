@@ -67,7 +67,7 @@ export default function Categories() {
   };
 
   return (
-    <section className="py-8 bg-[#F7F7F6] font-sans">
+    <section className="py-8 bg-[#E8E8E6] font-sans">
       <div className="max-w-5xl mx-auto px-4">
 
         {/* Section Header */}

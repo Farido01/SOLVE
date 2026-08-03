@@ -65,7 +65,7 @@ export default function Recommended() {
       : recommendedProducts.filter((p) => p.category === activeTab);
 
   return (
-    <section className="py-8 bg-[#F7F7F6]">
+    <section className="py-8 bg-[#E8E8E6]">
       <div className="max-w-5xl mx-auto px-4">
         {/* Section Header */}
         <div className="mb-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">

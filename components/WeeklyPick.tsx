@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 
 export default function WeeklyPick() {
   return (
-    <section className="py-8 px-4 bg-[#F7F7F6]">
+    <section className="py-8 px-4 bg-[#E8E8E6]">
       <div className="max-w-5xl mx-auto">
         {/* Editorial Dark Capsule Card */}
         <motion.div

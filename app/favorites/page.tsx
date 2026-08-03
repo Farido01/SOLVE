@@ -96,7 +96,7 @@ export default function FavoritesPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#F7F7F6] text-[#0D0E10] select-none font-sans">
+    <div className="min-h-screen flex flex-col bg-[#E8E8E6] text-[#0D0E10] select-none font-sans">
       <Header />
 
       <main className="flex-1 mt-14 pb-28">
@@ -118,7 +118,7 @@ export default function FavoritesPage() {
               </div>
 
               <div className="flex items-center gap-2">
-                <span className="text-xs font-bold text-neutral-600 font-mono bg-[#F7F7F6] px-4 py-2 rounded-full border border-neutral-200 shadow-2xs">
+                <span className="text-xs font-bold text-neutral-600 font-mono bg-[#E8E8E6] px-4 py-2 rounded-full border border-neutral-200 shadow-2xs">
                   {favorites.length} СОХРАНЁННЫХ МОДЕЛЕЙ
                 </span>
               </div>
@@ -131,7 +131,7 @@ export default function FavoritesPage() {
           {favorites.length === 0 ? (
             /* Empty Favorites View */
             <div className="bg-white rounded-3xl p-12 md:p-16 text-center space-y-6 border border-neutral-200/80 shadow-2xs max-w-lg mx-auto my-12 font-sans">
-              <div className="w-16 h-16 rounded-full bg-[#F7F7F6] flex items-center justify-center mx-auto text-neutral-400 border border-neutral-200">
+              <div className="w-16 h-16 rounded-full bg-[#E8E8E6] flex items-center justify-center mx-auto text-neutral-400 border border-neutral-200">
                 <Heart className="w-8 h-8 text-neutral-400" />
               </div>
               <div className="space-y-2">
@@ -179,7 +179,7 @@ export default function FavoritesPage() {
                         className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all border ${
                           isActive
                             ? 'bg-black text-white border-black shadow-sm'
-                            : 'bg-[#F7F7F6] text-neutral-700 hover:text-black border-neutral-200'
+                            : 'bg-[#E8E8E6] text-neutral-700 hover:text-black border-neutral-200'
                         }`}
                       >
                         {tab.label}

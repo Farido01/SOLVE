@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 
 export default function PromoBanner() {
   return (
-    <section className="px-4 py-4 bg-[#F7F7F6]">
+    <section className="px-4 py-4 bg-[#E8E8E6]">
       <div className="max-w-5xl mx-auto">
         <motion.div
           initial={{ opacity: 0, scale: 0.98 }}

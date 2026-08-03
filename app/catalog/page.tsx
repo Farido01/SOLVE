@@ -224,7 +224,7 @@ export default function CatalogPage() {
   }, [selectedCategory, selectedBrand, selectedSize, minPrice, priceRange, onlySale, searchQuery, sortBy]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#F7F7F6] text-[#0D0E10] select-none font-sans">
+    <div className="min-h-screen flex flex-col bg-[#E8E8E6] text-[#0D0E10] select-none font-sans">
       <Header />
 
       <main className="flex-1 mt-14 pb-28">
@@ -284,7 +284,7 @@ export default function CatalogPage() {
         </section>
 
         {/* Refined Sticky Controls Bar */}
-        <div className="sticky top-14 z-30 bg-[#F7F7F6]/95 backdrop-blur-md border-b border-neutral-200/80 py-3.5 px-4 md:px-8">
+        <div className="sticky top-14 z-30 bg-[#E8E8E6]/95 backdrop-blur-md border-b border-neutral-200/80 py-3.5 px-4 md:px-8">
           <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
             {/* Category Quick Pills */}
             <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5">

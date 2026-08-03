@@ -51,7 +51,7 @@ const brands: BrandCard[] = [
 
 export default function PopularBrands() {
   return (
-    <section className="py-10 bg-[#F7F7F6]">
+    <section className="py-10 bg-[#E8E8E6]">
       <div className="px-4 max-w-5xl mx-auto">
         {/* Section Header */}
         <div className="flex items-center justify-between mb-5">

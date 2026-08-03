@@ -49,7 +49,7 @@ export default function NewArrivals() {
   };
 
   return (
-    <section className="py-8 bg-[#F7F7F6] border-b border-neutral-200/60">
+    <section className="py-8 bg-[#E8E8E6] border-b border-neutral-200/60">
       <div className="max-w-5xl mx-auto px-4">
         {/* Header */}
         <div className="flex items-center justify-between mb-5">

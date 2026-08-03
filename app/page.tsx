@@ -13,7 +13,7 @@ import BottomNav from '@/components/BottomNav';
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen flex flex-col bg-[#F7F7F6]">
+    <div className="min-h-screen flex flex-col bg-[#E8E8E6]">
       <Header />
       <main className="flex-1 pb-20 md:pb-8 space-y-6 md:space-y-12">
         <HeroSlider />
