@@ -134,8 +134,7 @@ export default function CartPage() {
 
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
               <h1 className="font-display text-6xl sm:text-7xl md:text-8xl lg:text-[100px] uppercase leading-[0.85] tracking-tight text-[#0D0E10]">
-                КОРЗИНА<br className="sm:hidden" />
-                <span className="text-neutral-300"> /</span>
+                КОРЗИНА
               </h1>
 
               <div className="flex flex-col items-start sm:items-end gap-2">
@@ -149,34 +148,6 @@ export default function CartPage() {
               </div>
             </div>
 
-            {/* Free Shipping Bar */}
-            <div className="mt-6 p-3.5 bg-[#F7F7F6] rounded-2xl border border-neutral-200 space-y-2">
-              <div className="flex items-center justify-between text-[11px] font-bold">
-                <div className="flex items-center gap-2 text-neutral-600">
-                  <Truck className="w-3.5 h-3.5 text-neutral-500" />
-                  {deliveryFree ? (
-                    <span className="text-emerald-700 font-extrabold flex items-center gap-1.5">
-                      <Check className="w-3.5 h-3.5" />
-                      Бесплатная доставка активирована!
-                    </span>
-                  ) : (
-                    <span>
-                      До бесплатной доставки:{' '}
-                      <span className="text-[#0D0E10] font-extrabold font-mono">{(10000 - subtotal).toLocaleString('ru-RU')} ₽</span>
-                    </span>
-                  )}
-                </div>
-                <span className="font-mono text-neutral-400">{freeShipProgress}%</span>
-              </div>
-              <div className="w-full h-1.5 bg-neutral-200 rounded-full overflow-hidden">
-                <motion.div
-                  className={`h-full rounded-full ${deliveryFree ? 'bg-emerald-500' : 'bg-[#0D0E10]'}`}
-                  initial={{ width: 0 }}
-                  animate={{ width: `${freeShipProgress}%` }}
-                  transition={{ duration: 0.6, ease: 'easeOut' }}
-                />
-              </div>
-            </div>
           </div>
         </section>
 
