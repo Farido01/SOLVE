@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { Home, Grid, Heart, ShoppingBag } from 'lucide-react';
+import { Home, Grid, Heart, ShoppingBag, User } from 'lucide-react';
 
 interface NavItem {
   id: string;
@@ -38,6 +38,12 @@ const navItems: NavItem[] = [
     label: 'Корзина',
     icon: <ShoppingBag className="w-5 h-5" />,
     badge: 2,
+  },
+  {
+    id: 'profile',
+    href: '/profile',
+    label: 'Профиль',
+    icon: <User className="w-5 h-5" />,
   },
 ];
 

@@ -41,17 +41,7 @@ export default function Header() {
             <Search className="w-5 h-5" />
           </Button>
 
-          <Link href="/profile">
-            <Button
-              variant="ghost"
-              size="icon"
-              aria-label="Профиль"
-              className="text-neutral-900 hover:bg-neutral-200/60 min-h-[44px] min-w-[44px]"
-            >
-              <User className="w-5 h-5" />
-            </Button>
-          </Link>
-
+          {/* Cart Icon */}
           <Link href="/cart">
             <Button
               variant="ghost"
@@ -63,6 +53,18 @@ export default function Header() {
               <span className="absolute top-1.5 right-1.5 w-4 h-4 bg-black text-white text-[10px] font-bold rounded-full flex items-center justify-center font-sans">
                 2
               </span>
+            </Button>
+          </Link>
+
+          {/* Profile Icon */}
+          <Link href="/profile">
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label="Профиль"
+              className="text-neutral-900 hover:bg-neutral-200/60 min-h-[44px] min-w-[44px]"
+            >
+              <User className="w-5 h-5" />
             </Button>
           </Link>
         </div>
