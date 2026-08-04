@@ -217,7 +217,7 @@ export default function CatalogPage() {
       .filter((p) => {
         if (selectedCategory !== 'all' && p.category !== selectedCategory) return false;
         if (selectedBrand !== 'All' && p.brand.toLowerCase() !== selectedBrand.toLowerCase()) return false;
-        if (selectedSize !== 'All' && !p.sizes.includes(selectedSize)) return false;
+        if (selectedSize !== 'All' && selectedSize.trim() !== '' && !p.sizes.some(s => s.toLowerCase().includes(selectedSize.trim().toLowerCase()))) return false;
         if (p.price < minPrice) return false;
         if (p.price > priceRange) return false;
         if (onlySale && !p.isSale) return false;
@@ -401,30 +401,7 @@ export default function CatalogPage() {
                 className="overflow-hidden"
               >
                 <div className="max-w-6xl mx-auto mt-2.5 p-3.5 sm:p-4 bg-white rounded-2xl border border-neutral-200/90 shadow-sm space-y-3 font-sans">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 items-start">
-                    {/* Search Field */}
-                    <div className="space-y-1">
-                      <span className="text-[10px] font-extrabold uppercase tracking-wider text-neutral-400 block font-mono">Поиск</span>
-                      <div className="relative">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-neutral-400" />
-                        <input
-                          type="text"
-                          value={searchQuery}
-                          onChange={(e) => setSearchQuery(e.target.value)}
-                          placeholder="Название модели..."
-                          className="w-full pl-9 pr-7 py-1.5 text-xs bg-[#F9F9F8] rounded-xl border border-neutral-200/80 focus:outline-none focus:ring-1 focus:ring-black font-sans"
-                        />
-                        {searchQuery && (
-                          <button
-                            onClick={() => setSearchQuery('')}
-                            className="absolute right-2.5 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-black"
-                          >
-                            <X className="w-3.5 h-3.5" />
-                          </button>
-                        )}
-                      </div>
-                    </div>
-
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 items-start">
                     {/* Brands */}
                     <div className="space-y-1">
                       <span className="text-[10px] font-extrabold uppercase tracking-wider text-neutral-400 block font-mono">Бренд</span>
@@ -485,33 +462,26 @@ export default function CatalogPage() {
                       </div>
                     </div>
 
-                    {/* Size Selector */}
+                    {/* Size Text Input */}
                     <div className="space-y-1">
-                      <span className="text-[10px] font-extrabold uppercase tracking-wider text-neutral-400 block font-mono">Размер</span>
-                      <div className="flex flex-wrap gap-1 max-h-16 overflow-y-auto no-scrollbar">
-                        <button
-                          onClick={() => setSelectedSize('All')}
-                          className={`px-2 py-0.5 rounded-lg text-[11px] font-bold border transition-all ${
-                            selectedSize === 'All'
-                              ? 'bg-black text-white border-black'
-                              : 'bg-[#F9F9F8] text-neutral-700 border-neutral-200/80 hover:bg-neutral-100'
-                          }`}
-                        >
-                          Все
-                        </button>
-                        {sizesList.map((sz) => (
+                      <span className="text-[10px] font-extrabold uppercase tracking-wider text-neutral-400 block font-mono">Введите размер</span>
+                      <div className="relative">
+                        <input
+                          type="text"
+                          value={selectedSize === 'All' ? '' : selectedSize}
+                          onChange={(e) => setSelectedSize(e.target.value || 'All')}
+                          placeholder="Например: M, L, XL, 42..."
+                          className="w-full px-3 py-1.5 text-xs bg-[#F9F9F8] rounded-xl border border-neutral-200/80 focus:outline-none focus:ring-1 focus:ring-black font-sans uppercase font-bold"
+                        />
+                        {selectedSize !== 'All' && (
                           <button
-                            key={sz}
-                            onClick={() => setSelectedSize(sz)}
-                            className={`px-2 py-0.5 rounded-lg text-[11px] font-bold border transition-all ${
-                              selectedSize === sz
-                                ? 'bg-black text-white border-black'
-                                : 'bg-[#F9F9F8] text-neutral-700 border-neutral-200/80 hover:bg-neutral-100'
-                            }`}
+                            onClick={() => setSelectedSize('All')}
+                            className="absolute right-2.5 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-black"
+                            aria-label="Очистить размер"
                           >
-                            {sz}
+                            <X className="w-3.5 h-3.5" />
                           </button>
-                        ))}
+                        )}
                       </div>
                     </div>
                   </div>
