@@ -346,15 +346,15 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
             <div className="grid grid-cols-3 gap-2 pt-2 text-center text-[10px] font-bold text-neutral-600 font-mono">
               <div className="p-3 bg-white rounded-2xl border border-neutral-200/80 shadow-2xs flex flex-col items-center gap-1">
                 <Truck className="w-4 h-4 text-black" />
-                <span>Доставка 2-4 дня</span>
+                <span>Доставка сегодня</span>
               </div>
               <div className="p-3 bg-white rounded-2xl border border-neutral-200/80 shadow-2xs flex flex-col items-center gap-1">
                 <ShieldCheck className="w-4 h-4 text-black" />
-                <span>100% Оригинал</span>
+                <span>В наличии в городе</span>
               </div>
               <div className="p-3 bg-white rounded-2xl border border-neutral-200/80 shadow-2xs flex flex-col items-center gap-1">
                 <RotateCcw className="w-4 h-4 text-black" />
-                <span>Примерка перед оплатой</span>
+                <span>Примерка при вручении</span>
               </div>
             </div>
 
@@ -396,7 +396,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
                   onClick={() => toggleAccordion('shipping')}
                   className="w-full p-4 flex items-center justify-between text-left font-extrabold text-xs uppercase tracking-wider text-neutral-900 font-mono"
                 >
-                  <span>ДОСТАВКА И ПРИМЕРКА</span>
+                  <span>ДОСТАВКА И САМОВЫВОЗ</span>
                   <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${openAccordion === 'shipping' ? 'rotate-180' : ''}`} />
                 </button>
                 <AnimatePresence>
@@ -408,8 +408,8 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
                       transition={{ duration: 0.2 }}
                       className="px-4 pb-4 text-xs text-neutral-600 space-y-2 border-t border-neutral-100 pt-3"
                     >
-                      <p>Бесплатная доставка курьером или в пункты выдачи СДЭК при заказе от 5 000 ₽.</p>
-                      <p>При доставке курьером доступна бесплатная примерка перед покупкой (15 минут).</p>
+                      <p>Все товары находятся в наличии в нашем городском шоуруме. Быстрая доставка курьером до двери в день заказа или бесплатный самовывоз сегодня.</p>
+                      <p>При доставке курьером доступна примерка перед покупкой (15 минут).</p>
                     </motion.div>
                   )}
                 </AnimatePresence>

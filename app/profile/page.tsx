@@ -252,7 +252,7 @@ export default function ProfilePage() {
               }`}
             >
               <MapPin className="w-4 h-4" />
-              <span>АДРЕСА И ПВЗ СДЭК ({addresses.length})</span>
+              <span>АДРЕСА ДОСТАВКИ ({addresses.length})</span>
             </button>
 
             <button
@@ -292,11 +292,11 @@ export default function ProfilePage() {
                   <div className="space-y-0.5">
                     <div className="flex items-center gap-2">
                       <span className="font-mono text-base font-black text-black">ЗАКАЗ #SV-2026-104</span>
-                      <span className="px-2.5 py-0.5 bg-blue-500 text-white text-[10px] font-mono font-extrabold rounded-md uppercase tracking-wider">
-                        В ПУТИ • СДЭК #1489201
+                      <span className="px-2.5 py-0.5 bg-[#0D0E10] text-white text-[10px] font-mono font-extrabold rounded-md uppercase tracking-wider">
+                        КУРЬЕР В ПУТИ • ДОСТАВКА СЕГОДНЯ
                       </span>
                     </div>
-                    <span className="text-xs text-neutral-400 font-mono">Оформлен: 3 августа 2026 • Оплачен картой СБП</span>
+                    <span className="text-xs text-neutral-400 font-mono">Оформлен: 3 августа 2026 • Оплачен СБП</span>
                   </div>
 
                   <div className="text-right font-mono">
@@ -308,25 +308,25 @@ export default function ProfilePage() {
                 {/* Progress Timeline */}
                 <div className="py-2">
                   <span className="text-[10px] font-extrabold uppercase tracking-widest text-neutral-400 font-mono block mb-3">
-                    СТАТУС ДОСТАВКИ
+                    ЭТАП ДОСТАВКИ ПО ГОРОДУ
                   </span>
                   
                   <div className="grid grid-cols-4 gap-2 relative">
                     <div className="space-y-1 text-center">
                       <div className="h-2 rounded-full bg-emerald-500" />
-                      <span className="text-[10px] font-mono font-bold text-neutral-900 block">Оплачен</span>
+                      <span className="text-[10px] font-mono font-bold text-neutral-900 block">Принят</span>
                     </div>
                     <div className="space-y-1 text-center">
                       <div className="h-2 rounded-full bg-emerald-500" />
-                      <span className="text-[10px] font-mono font-bold text-neutral-900 block">Собран на складе</span>
+                      <span className="text-[10px] font-mono font-bold text-neutral-900 block">Собран в магазине</span>
                     </div>
                     <div className="space-y-1 text-center">
-                      <div className="h-2 rounded-full bg-blue-500 animate-pulse" />
-                      <span className="text-[10px] font-mono font-black text-blue-600 block">В пути СДЭК</span>
+                      <div className="h-2 rounded-full bg-black animate-pulse" />
+                      <span className="text-[10px] font-mono font-black text-black block">Курьер в пути</span>
                     </div>
                     <div className="space-y-1 text-center">
                       <div className="h-2 rounded-full bg-neutral-200" />
-                      <span className="text-[10px] font-mono font-bold text-neutral-400 block">Готов к выдаче</span>
+                      <span className="text-[10px] font-mono font-bold text-neutral-400 block">Доставлен</span>
                     </div>
                   </div>
                 </div>
@@ -341,7 +341,7 @@ export default function ProfilePage() {
                       Худи SOLVE Chaos Dark Oversized
                     </h4>
                     <p className="text-xs text-neutral-500 font-mono mt-0.5">
-                      Артикул: SV-2026-CH • Цвет: Chaos Black • Размер: Oversized L
+                      Артикул: SV-2026-CH • В наличии в шоуруме • Размер: Oversized L
                     </p>
                     <div className="flex items-center gap-2 pt-1">
                       <span className="px-2 py-0.5 bg-black text-white text-[9px] font-mono font-bold rounded">
@@ -356,17 +356,16 @@ export default function ProfilePage() {
                 <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
                   <div className="flex items-center gap-2 font-mono text-xs text-neutral-600">
                     <MapPin className="w-4 h-4 text-black shrink-0" />
-                    <span>ПВЗ СДЭК: г. Москва, ул. Тверская, 12</span>
+                    <span>Доставка курьером: г. Москва, ул. Арбат, 24</span>
                   </div>
 
                   <div className="flex items-center gap-2">
                     <Button
-                      onClick={() => setIsCdekModalOpen(true)}
                       size="sm"
                       className="bg-black hover:bg-neutral-800 text-white font-mono text-xs font-extrabold px-4 py-2 rounded-xl"
                     >
                       <Truck className="w-3.5 h-3.5 mr-1.5" />
-                      <span>Отследить трек СДЭК</span>
+                      <span>Детали доставки</span>
                     </Button>
 
                     <Button
@@ -645,63 +644,7 @@ export default function ProfilePage() {
         </div>
       </main>
 
-      {/* CDEK Tracking Modal */}
-      <AnimatePresence>
-        {isCdekModalOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsCdekModalOpen(false)}
-              className="absolute inset-0 bg-black/75 backdrop-blur-sm"
-            />
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative z-10 w-full max-w-lg bg-[#F9F9F8] rounded-3xl p-6 border border-neutral-200 shadow-2xl space-y-4 font-sans"
-            >
-              <div className="flex items-center justify-between border-b border-neutral-200 pb-3">
-                <div className="flex items-center gap-2">
-                  <Truck className="w-5 h-5 text-black" />
-                  <h3 className="font-display text-2xl uppercase tracking-wider text-[#0D0E10]">
-                    ТРЕКИНГ СДЭК #1489201
-                  </h3>
-                </div>
-                <button
-                  onClick={() => setIsCdekModalOpen(false)}
-                  className="w-8 h-8 rounded-full bg-white border border-neutral-200 flex items-center justify-center"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              </div>
 
-              <div className="space-y-3 font-mono text-xs">
-                <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-800 font-bold flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                  <span>Посылка находится в курьерской доставке г. Москва</span>
-                </div>
-
-                <div className="border border-neutral-200 rounded-2xl bg-white p-4 space-y-2">
-                  <div className="flex justify-between text-neutral-500 text-[10px]">
-                    <span>04.08.2026 14:20</span>
-                    <span className="font-bold text-black">Прибыло в сортировочный центр MSK</span>
-                  </div>
-                  <div className="flex justify-between text-neutral-500 text-[10px]">
-                    <span>03.08.2026 18:45</span>
-                    <span>Отправлено из центрального склада SOLVE</span>
-                  </div>
-                </div>
-              </div>
-
-              <Button onClick={() => setIsCdekModalOpen(false)} className="w-full bg-black text-white font-extrabold text-xs uppercase py-3 rounded-xl font-mono">
-                ЗАКРЫТЬ
-              </Button>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
 
       {/* Add Address Modal */}
       <AnimatePresence>
