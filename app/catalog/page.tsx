@@ -163,12 +163,11 @@ const categoryTabs = [
 ];
 
 const luxuryCategoryItems = [
-  { id: 'all', num: '01', title: 'ВЕСЬ КАТАЛОГ', sub: 'Полный ассортимент одежды, кроссовок и аксессуаров', count: '300+ позиций', image: '/images/hero-1.png', tag: 'ALL' },
-  { id: 'clothing', num: '02', title: 'ОДЕЖДА', sub: 'Худи, оверсайз футболки, лонгсливы и штаны', count: '120+ моделей', image: '/images/cat-clothing.png', tag: 'CLOTHING' },
-  { id: 'sneakers', num: '03', title: 'КРОССОВКИ', sub: 'Редкие релизы и культовые модели силуэтов', count: '80+ моделей', image: '/images/cat-sneakers.png', tag: 'SNEAKERS' },
-  { id: 'keychains', num: '04', title: 'БРЕЛОКИ', sub: 'Металлические цепочки и подвесы SOLVE Star', count: '40+ моделей', image: '/images/cat-keychains.png', tag: 'KEYCHAINS' },
-  { id: 'accessories', num: '05', title: 'АКСЕССУАРЫ', sub: 'Кепки, шарфы, атрибутика и мелочи', count: '60+ моделей', image: '/images/cat-accessories.png', tag: 'ACCESSORIES' },
-  { id: 'bags', num: '06', title: 'СУМКИ', sub: 'Модульные кроссбоди и вместительные шоперы', count: '30+ моделей', image: '/images/cat-bags.png', tag: 'BAGS' },
+  { id: 'clothing', num: '01', title: 'ОДЕЖДА', sub: 'Худи, оверсайз футболки, лонгсливы и штаны', count: '120+ моделей', image: '/images/cat-clothing.png', tag: 'CLOTHING' },
+  { id: 'sneakers', num: '02', title: 'КРОССОВКИ', sub: 'Редкие релизы и культовые модели силуэтов', count: '80+ моделей', image: '/images/cat-sneakers.png', tag: 'SNEAKERS' },
+  { id: 'keychains', num: '03', title: 'БРЕЛОКИ', sub: 'Металлические цепочки и подвесы SOLVE Star', count: '40+ моделей', image: '/images/cat-keychains.png', tag: 'KEYCHAINS' },
+  { id: 'accessories', num: '04', title: 'АКСЕССУАРЫ', sub: 'Кепки, шарфы, атрибутика и мелочи', count: '60+ моделей', image: '/images/cat-accessories.png', tag: 'ACCESSORIES' },
+  { id: 'bags', num: '05', title: 'СУМКИ', sub: 'Модульные кроссбоди и вместительные шоперы', count: '30+ моделей', image: '/images/cat-bags.png', tag: 'BAGS' },
 ];
 
 const brandsList = ['All', 'Solve', 'Nike', 'New Balance', 'Stussy', 'Supreme', 'Off-White'];
@@ -648,17 +647,17 @@ export default function CatalogPage() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ duration: 0.25 }}
-              className="relative z-10 w-full max-w-3xl bg-[#F9F9F8] rounded-3xl p-6 sm:p-8 border border-neutral-200 shadow-2xl space-y-6 max-h-[88vh] overflow-y-auto no-scrollbar font-sans"
+              className="relative z-10 w-full max-w-3xl bg-[#F9F9F8] rounded-3xl p-5 sm:p-7 border border-neutral-200 shadow-2xl space-y-3.5 max-h-[88vh] overflow-y-auto no-scrollbar font-sans"
             >
               {/* Modal Header */}
-              <div className="flex items-center justify-between border-b border-neutral-200 pb-4">
+              <div className="flex items-center justify-between border-b border-neutral-200/80 pb-2.5">
                 <div>
-                  <div className="flex items-center gap-2 mb-1">
+                  <div className="flex items-center gap-2 mb-0.5">
                     <span className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-neutral-400 font-mono">
                       SOLVE EDITORIAL INDEX 2026
                     </span>
                     <span className="px-2 py-0.5 bg-black text-white text-[9px] font-extrabold font-mono rounded">
-                      6 РАЗДЕЛОВ
+                      5 РАЗДЕЛОВ
                     </span>
                   </div>
                   <h3 className="font-display text-3xl sm:text-4xl text-[#0D0E10] uppercase tracking-wide leading-none">
@@ -668,15 +667,15 @@ export default function CatalogPage() {
 
                 <button
                   onClick={() => setIsCategoryModalOpen(false)}
-                  className="w-10 h-10 rounded-full bg-white text-neutral-600 hover:text-black border border-neutral-200 flex items-center justify-center transition-all shadow-2xs hover:scale-105 shrink-0"
+                  className="w-9 h-9 rounded-full bg-white text-neutral-600 hover:text-black border border-neutral-200 flex items-center justify-center transition-all shadow-2xs hover:scale-105 shrink-0"
                   aria-label="Закрыть окно"
                 >
-                  <X className="w-5 h-5" />
+                  <X className="w-4 h-4" />
                 </button>
               </div>
 
               {/* Editorial List Rows */}
-              <div className="space-y-3">
+              <div className="space-y-2.5">
                 {luxuryCategoryItems.map((item) => {
                   const isSelected = selectedCategory === item.id;
                   return (
@@ -686,55 +685,53 @@ export default function CatalogPage() {
                         setSelectedCategory(item.id);
                         setIsCategoryModalOpen(false);
                       }}
-                      className={`group flex items-center justify-between p-4 sm:p-5 rounded-2xl border transition-all cursor-pointer shadow-2xs ${
+                      className={`group flex items-center justify-between p-3.5 sm:p-4 rounded-2xl border transition-all cursor-pointer shadow-2xs ${
                         isSelected
-                          ? 'bg-black text-white border-black shadow-md'
-                          : 'bg-white text-[#0D0E10] border-neutral-200/90 hover:border-black hover:bg-neutral-900 hover:text-white'
+                          ? 'bg-[#EBECEE] text-[#0D0E10] border-neutral-900 shadow-xs'
+                          : 'bg-white text-[#0D0E10] border-neutral-200/80 hover:border-black hover:bg-white'
                       }`}
                     >
                       {/* Left: Number & Titles */}
-                      <div className="flex items-center gap-4 min-w-0">
-                        <span className={`font-mono text-sm font-extrabold shrink-0 ${
-                          isSelected ? 'text-neutral-400' : 'text-neutral-400 group-hover:text-neutral-400'
+                      <div className="flex items-center gap-3.5 min-w-0">
+                        <span className={`font-mono text-xs font-black shrink-0 ${
+                          isSelected ? 'text-black' : 'text-neutral-400 group-hover:text-black'
                         }`}>
                           {item.num}
                         </span>
 
                         <div className="min-w-0">
                           <div className="flex items-center gap-2">
-                            <h4 className="font-display text-2xl sm:text-3xl uppercase tracking-wider leading-none">
+                            <h4 className="font-display text-2xl sm:text-3xl uppercase tracking-wider leading-none text-[#0D0E10]">
                               {item.title}
                             </h4>
                             {isSelected && (
-                              <span className="w-2 h-2 rounded-full bg-emerald-400 shrink-0" />
+                              <span className="px-2 py-0.5 bg-black text-white text-[9px] font-extrabold font-mono rounded uppercase">
+                                ВЫБРАНО ✓
+                              </span>
                             )}
                           </div>
-                          <p className={`text-xs mt-1 truncate ${
-                            isSelected ? 'text-neutral-300' : 'text-neutral-500 group-hover:text-neutral-300'
-                          }`}>
+                          <p className="text-xs mt-0.5 text-neutral-500 truncate">
                             {item.sub}
                           </p>
                         </div>
                       </div>
 
                       {/* Right: Count, Image Preview, Arrow */}
-                      <div className="flex items-center gap-4 shrink-0 pl-2">
-                        <span className={`hidden sm:inline-block font-mono text-xs font-bold ${
-                          isSelected ? 'text-neutral-300' : 'text-neutral-500 group-hover:text-neutral-300'
-                        }`}>
+                      <div className="flex items-center gap-3 shrink-0 pl-2">
+                        <span className="hidden sm:inline-block font-mono text-xs font-bold text-neutral-500">
                           {item.count}
                         </span>
 
-                        <div className="w-14 h-14 rounded-xl bg-[#EBECEE] border border-neutral-200 overflow-hidden flex items-center justify-center p-1.5 shrink-0 group-hover:bg-white/10 group-hover:border-white/20 transition-colors">
+                        <div className="w-12 h-12 rounded-xl bg-white border border-neutral-200 overflow-hidden flex items-center justify-center p-1 shrink-0 group-hover:scale-105 transition-transform">
                           <img
                             src={item.image}
                             alt={item.title}
-                            className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300"
+                            className="w-full h-full object-contain"
                           />
                         </div>
 
-                        <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-transform group-hover:translate-x-1 ${
-                          isSelected ? 'bg-white text-black' : 'bg-neutral-100 text-black group-hover:bg-white group-hover:text-black'
+                        <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
+                          isSelected ? 'bg-black text-white' : 'bg-neutral-100 text-neutral-600 group-hover:bg-black group-hover:text-white'
                         }`}>
                           <ChevronRight className="w-4 h-4" />
                         </div>
