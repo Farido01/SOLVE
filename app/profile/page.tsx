@@ -38,7 +38,7 @@ import { Button } from '@/components/ui/button';
 interface SavedAddress {
   id: string;
   title: string;
-  type: 'cdek' | 'courier';
+  type: 'pickup' | 'courier';
   address: string;
   details?: string;
   isDefault: boolean;
@@ -56,7 +56,6 @@ export default function ProfilePage() {
 
   const [copiedCode, setCopiedCode] = useState(false);
   const [isAddAddressOpen, setIsAddAddressOpen] = useState(false);
-  const [isCdekModalOpen, setIsCdekModalOpen] = useState(false);
   const [activeOrderTracking, setActiveOrderTracking] = useState<string | null>(null);
 
   const [newAddressInput, setNewAddressInput] = useState('');
@@ -65,10 +64,10 @@ export default function ProfilePage() {
   const [addresses, setAddresses] = useState<SavedAddress[]>([
     {
       id: '1',
-      title: 'ПВЗ СДЭК (Центральный)',
-      type: 'cdek',
+      title: 'Шоурум SOLVE (Самовывоз)',
+      type: 'pickup',
       address: 'г. Москва, ул. Тверская, д. 12, стр. 1',
-      details: 'ПВЗ #MSK42 • Режим: 09:00 - 21:00 ежедневно',
+      details: 'Флагманский магазин SOLVE • Режим: 10:00 - 22:00 ежедневно',
       isDefault: true,
     },
     {
@@ -115,7 +114,7 @@ export default function ProfilePage() {
     const newAddr: SavedAddress = {
       id: Date.now().toString(),
       title: newAddressTitle.trim() || 'Новый адрес',
-      type: 'cdek',
+      type: 'courier',
       address: newAddressInput.trim(),
       details: 'Добавлено вручную',
       isDefault: false,
@@ -369,7 +368,7 @@ export default function ProfilePage() {
                     <div className="flex items-center gap-2">
                       <span className="font-mono text-base font-black text-black">ЗАКАЗ #SV-2025-982</span>
                       <span className="px-2.5 py-0.5 bg-emerald-500 text-white text-[10px] font-mono font-extrabold rounded-md uppercase tracking-wider">
-                        ВРУЧЕН В ПВЗ СДЭК ✓
+                        ДОСТАВЛЕН И ВРУЧЕН ✓
                       </span>
                     </div>
                     <span className="text-xs text-neutral-400 font-mono">Выполнен: 15 июля 2026</span>
@@ -661,7 +660,7 @@ export default function ProfilePage() {
                   <label className="text-[10px] font-extrabold uppercase text-neutral-400 font-mono">Название адреса</label>
                   <input
                     type="text"
-                    placeholder="Например: Работа / ПВЗ СДЭК"
+                    placeholder="Например: Работа / Дом"
                     value={newAddressTitle}
                     onChange={(e) => setNewAddressTitle(e.target.value)}
                     className="w-full px-4 py-2.5 text-xs bg-white rounded-xl border border-neutral-200 font-bold"
