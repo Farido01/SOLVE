@@ -426,20 +426,27 @@ export default function CatalogPage() {
                       </div>
                     </div>
 
-                    {/* Brands Dropdown/Select */}
-                    <div className="space-y-1.5">
+                    {/* Brands */}
+                    <div className="space-y-2">
                       <span className="text-[11px] font-extrabold uppercase tracking-wider text-neutral-900 block font-mono">Бренд</span>
-                      <select
-                        value={selectedBrand}
-                        onChange={(e) => setSelectedBrand(e.target.value)}
-                        className="w-full px-3 py-2 text-xs font-bold bg-neutral-100 rounded-xl border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-black font-sans uppercase cursor-pointer"
-                      >
-                        {brandsList.map((brand) => (
-                          <option key={brand} value={brand}>
-                            {brand === 'All' ? 'Все бренды' : brand}
-                          </option>
-                        ))}
-                      </select>
+                      <div className="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto no-scrollbar">
+                        {brandsList.map((brand) => {
+                          const isSelected = selectedBrand === brand;
+                          return (
+                            <button
+                              key={brand}
+                              onClick={() => setSelectedBrand(brand)}
+                              className={`px-3 py-1 rounded-xl text-xs font-bold transition-all border ${
+                                isSelected
+                                  ? 'bg-black text-white border-black'
+                                  : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200 border-neutral-200'
+                              }`}
+                            >
+                              {brand === 'All' ? 'Все' : brand}
+                            </button>
+                          );
+                        })}
+                      </div>
                     </div>
 
                     {/* Price Slider & Inputs */}
