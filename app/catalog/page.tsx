@@ -184,7 +184,6 @@ export default function CatalogPage() {
   const [sortBy, setSortBy] = useState<'popular' | 'price-asc' | 'price-desc' | 'rating'>('popular');
   const [isFilterPanelOpen, setIsFilterPanelOpen] = useState(false);
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
-  const [isSizeOpen, setIsSizeOpen] = useState(false);
   const [gridCols, setGridCols] = useState<3 | 4>(4);
 
   // Active filter count
@@ -391,34 +390,34 @@ export default function CatalogPage() {
           </div>
 
 
-          {/* Smooth Inline Expandable Filter Bar (Zero Backdrop, Realtime Filter) */}
+          {/* Smooth Inline Expandable Filter Bar (Compact & Streamlined) */}
           <AnimatePresence>
             {isFilterPanelOpen && (
               <motion.div
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: 'auto', opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.25, ease: 'easeInOut' }}
+                transition={{ duration: 0.22, ease: 'easeInOut' }}
                 className="overflow-hidden"
               >
-                <div className="max-w-6xl mx-auto mt-3.5 p-5 bg-white rounded-3xl border border-neutral-200/90 shadow-sm space-y-5 font-sans">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-start">
+                <div className="max-w-6xl mx-auto mt-2.5 p-3.5 sm:p-4 bg-white rounded-2xl border border-neutral-200/90 shadow-sm space-y-3 font-sans">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 items-start">
                     {/* Search Field */}
-                    <div className="space-y-1.5">
-                      <span className="text-[11px] font-extrabold uppercase tracking-wider text-neutral-900 block font-mono">Поиск</span>
+                    <div className="space-y-1">
+                      <span className="text-[10px] font-extrabold uppercase tracking-wider text-neutral-400 block font-mono">Поиск</span>
                       <div className="relative">
-                        <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-neutral-400" />
                         <input
                           type="text"
                           value={searchQuery}
                           onChange={(e) => setSearchQuery(e.target.value)}
-                          placeholder="Название товара..."
-                          className="w-full pl-10 pr-8 py-2 text-xs bg-neutral-100/90 rounded-xl focus:outline-none focus:ring-2 focus:ring-black font-sans"
+                          placeholder="Название модели..."
+                          className="w-full pl-9 pr-7 py-1.5 text-xs bg-[#F9F9F8] rounded-xl border border-neutral-200/80 focus:outline-none focus:ring-1 focus:ring-black font-sans"
                         />
                         {searchQuery && (
                           <button
                             onClick={() => setSearchQuery('')}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-black"
+                            className="absolute right-2.5 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-black"
                           >
                             <X className="w-3.5 h-3.5" />
                           </button>
@@ -427,22 +426,22 @@ export default function CatalogPage() {
                     </div>
 
                     {/* Brands */}
-                    <div className="space-y-2">
-                      <span className="text-[11px] font-extrabold uppercase tracking-wider text-neutral-900 block font-mono">Бренд</span>
-                      <div className="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto no-scrollbar">
+                    <div className="space-y-1">
+                      <span className="text-[10px] font-extrabold uppercase tracking-wider text-neutral-400 block font-mono">Бренд</span>
+                      <div className="flex flex-wrap gap-1 max-h-16 overflow-y-auto no-scrollbar">
                         {brandsList.map((brand) => {
                           const isSelected = selectedBrand === brand;
                           return (
                             <button
                               key={brand}
                               onClick={() => setSelectedBrand(brand)}
-                              className={`px-3 py-1 rounded-xl text-xs font-bold transition-all border ${
+                              className={`px-2.5 py-0.5 rounded-lg text-[11px] font-bold transition-all border ${
                                 isSelected
-                                  ? 'bg-black text-white border-black'
-                                  : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200 border-neutral-200'
+                                  ? 'bg-black text-white border-black shadow-2xs'
+                                  : 'bg-[#F9F9F8] text-neutral-700 hover:bg-neutral-100 border-neutral-200/80'
                               }`}
                             >
-                              {brand === 'All' ? 'Все' : brand}
+                              {brand}
                             </button>
                           );
                         })}
@@ -450,15 +449,16 @@ export default function CatalogPage() {
                     </div>
 
                     {/* Price Slider & Inputs */}
-                    <div className="space-y-1.5">
-                      <div className="flex items-center justify-between text-[11px]">
-                        <span className="font-extrabold uppercase tracking-wider text-neutral-900 font-mono">Стоимость (₽)</span>
-                        <span className="font-extrabold text-black font-mono">до {priceRange.toLocaleString('ru-RU')} ₽</span>
+                    <div className="space-y-1">
+                      <div className="flex items-center justify-between text-[10px] font-mono">
+                        <span className="font-extrabold uppercase tracking-wider text-neutral-400">Цена (₽)</span>
+                        <span className="font-extrabold text-black">до {priceRange.toLocaleString('ru-RU')} ₽</span>
                       </div>
 
-                      <div className="flex items-center gap-2">
+                      {/* Manual Price Inputs */}
+                      <div className="flex items-center gap-1.5">
                         <div className="flex-1 relative">
-                          <span className="absolute left-2 top-1/2 -translate-y-1/2 text-[9px] font-bold text-neutral-400">от</span>
+                          <span className="absolute left-2 top-1/2 -translate-y-1/2 text-[9px] font-bold text-neutral-400 font-mono">от</span>
                           <input
                             type="number"
                             min={0}
@@ -466,12 +466,12 @@ export default function CatalogPage() {
                             value={minPrice}
                             onChange={(e) => setMinPrice(Number(e.target.value))}
                             placeholder="0"
-                            className="w-full pl-6 pr-2 py-1.5 text-xs bg-neutral-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-black font-mono font-bold"
+                            className="w-full pl-6 pr-1.5 py-1 text-xs bg-[#F9F9F8] rounded-lg border border-neutral-200/80 focus:outline-none focus:ring-1 focus:ring-black font-mono font-bold"
                           />
                         </div>
-                        <span className="text-neutral-300 font-bold">—</span>
+                        <span className="text-neutral-300 font-bold text-xs">—</span>
                         <div className="flex-1 relative">
-                          <span className="absolute left-2 top-1/2 -translate-y-1/2 text-[9px] font-bold text-neutral-400">до</span>
+                          <span className="absolute left-2 top-1/2 -translate-y-1/2 text-[9px] font-bold text-neutral-400 font-mono">до</span>
                           <input
                             type="number"
                             min={minPrice}
@@ -479,97 +479,61 @@ export default function CatalogPage() {
                             value={priceRange}
                             onChange={(e) => setPriceRange(Number(e.target.value))}
                             placeholder="20000"
-                            className="w-full pl-6 pr-2 py-1.5 text-xs bg-neutral-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-black font-mono font-bold"
+                            className="w-full pl-6 pr-1.5 py-1 text-xs bg-[#F9F9F8] rounded-lg border border-neutral-200/80 focus:outline-none focus:ring-1 focus:ring-black font-mono font-bold"
                           />
                         </div>
                       </div>
                     </div>
 
-                    {/* Collapsible Size Selector Button */}
-                    <div className="space-y-1.5">
-                      <span className="text-[11px] font-extrabold uppercase tracking-wider text-neutral-900 block font-mono">Размер</span>
-                      <button
-                        onClick={() => setIsSizeOpen(!isSizeOpen)}
-                        className={`w-full px-3 py-2 text-xs font-extrabold rounded-xl border transition-all flex items-center justify-between font-sans ${
-                          selectedSize !== 'All' || isSizeOpen
-                            ? 'bg-black text-white border-black shadow-xs'
-                            : 'bg-neutral-100 text-neutral-800 border-neutral-200 hover:border-neutral-400'
-                        }`}
-                      >
-                        <span>
-                          {selectedSize === 'All' ? 'ВЫБРАТЬ РАЗМЕР (ВСЕ)' : `РАЗМЕР: ${selectedSize}`}
-                        </span>
-                        <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isSizeOpen ? 'rotate-180' : ''}`} />
-                      </button>
+                    {/* Size Selector */}
+                    <div className="space-y-1">
+                      <span className="text-[10px] font-extrabold uppercase tracking-wider text-neutral-400 block font-mono">Размер</span>
+                      <div className="flex flex-wrap gap-1 max-h-16 overflow-y-auto no-scrollbar">
+                        <button
+                          onClick={() => setSelectedSize('All')}
+                          className={`px-2 py-0.5 rounded-lg text-[11px] font-bold border transition-all ${
+                            selectedSize === 'All'
+                              ? 'bg-black text-white border-black'
+                              : 'bg-[#F9F9F8] text-neutral-700 border-neutral-200/80 hover:bg-neutral-100'
+                          }`}
+                        >
+                          Все
+                        </button>
+                        {sizesList.map((sz) => (
+                          <button
+                            key={sz}
+                            onClick={() => setSelectedSize(sz)}
+                            className={`px-2 py-0.5 rounded-lg text-[11px] font-bold border transition-all ${
+                              selectedSize === sz
+                                ? 'bg-black text-white border-black'
+                                : 'bg-[#F9F9F8] text-neutral-700 border-neutral-200/80 hover:bg-neutral-100'
+                            }`}
+                          >
+                            {sz}
+                          </button>
+                        ))}
+                      </div>
                     </div>
                   </div>
 
-                  {/* Expandable Size Grid (Opens on click) */}
-                  <AnimatePresence>
-                    {isSizeOpen && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.2 }}
-                        className="overflow-hidden pt-2 border-t border-neutral-100"
-                      >
-                        <div className="flex items-center justify-between mb-2">
-                          <span className="text-[10px] font-extrabold uppercase text-neutral-400 font-mono">ВЫБЕРИТЕ ВАШ РАЗМЕР:</span>
-                          <button
-                            onClick={() => setSelectedSize('All')}
-                            className="text-[10px] font-extrabold text-neutral-600 hover:text-black underline font-mono"
-                          >
-                            Сбросить размер
-                          </button>
-                        </div>
-                        <div className="flex flex-wrap gap-1.5">
-                          <button
-                            onClick={() => { setSelectedSize('All'); setIsSizeOpen(false); }}
-                            className={`px-3 py-1.5 rounded-xl text-xs font-bold border transition-all ${
-                              selectedSize === 'All'
-                                ? 'bg-black text-white border-black shadow-2xs'
-                                : 'bg-neutral-100 text-neutral-700 border-neutral-200 hover:bg-neutral-200'
-                            }`}
-                          >
-                            Все размеры
-                          </button>
-                          {sizesList.map((sz) => (
-                            <button
-                              key={sz}
-                              onClick={() => { setSelectedSize(sz); setIsSizeOpen(false); }}
-                              className={`px-3 py-1.5 rounded-xl text-xs font-bold border transition-all ${
-                                selectedSize === sz
-                                  ? 'bg-black text-white border-black shadow-2xs'
-                                  : 'bg-neutral-100 text-neutral-700 border-neutral-200 hover:bg-neutral-200'
-                              }`}
-                            >
-                              {sz}
-                            </button>
-                          ))}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-
                   {/* Options & Reset Footer */}
-                  <div className="flex items-center justify-between pt-3 border-t border-neutral-100 text-xs">
+                  <div className="flex items-center justify-between pt-2 border-t border-neutral-100 text-xs">
                     <label className="flex items-center gap-2 cursor-pointer select-none">
                       <input
                         type="checkbox"
                         checked={onlySale}
                         onChange={(e) => setOnlySale(e.target.checked)}
-                        className="w-4 h-4 accent-black rounded cursor-pointer"
+                        className="w-3.5 h-3.5 accent-black rounded cursor-pointer"
                       />
-                      <span className="font-extrabold text-neutral-900">Только товары со скидкой</span>
+                      <span className="font-extrabold text-neutral-800 text-[11px]">Только со скидкой</span>
                     </label>
 
                     <button
                       onClick={resetFilters}
-                      className="flex items-center gap-1 font-bold text-neutral-500 hover:text-black transition-colors"
+                      className="flex items-center gap-1 text-[11px] font-bold text-neutral-500 hover:text-black transition-colors"
                     >
-                      <RotateCcw className="w-3.5 h-3.5" />
-                      <span>Сбросить фильтры</span>
+                      <RotateCcw className="w-3 h-3" />
+                      <span>Сбросить все</span>
                     </button>
                   </div>
                 </div>
