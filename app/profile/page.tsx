@@ -353,29 +353,10 @@ export default function ProfilePage() {
                 </div>
 
                 {/* Actions Footer */}
-                <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
+                <div className="flex items-center justify-between gap-3 pt-2">
                   <div className="flex items-center gap-2 font-mono text-xs text-neutral-600">
                     <MapPin className="w-4 h-4 text-black shrink-0" />
                     <span>Доставка курьером: г. Москва, ул. Арбат, 24</span>
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <Button
-                      size="sm"
-                      className="bg-black hover:bg-neutral-800 text-white font-mono text-xs font-extrabold px-4 py-2 rounded-xl"
-                    >
-                      <Truck className="w-3.5 h-3.5 mr-1.5" />
-                      <span>Детали доставки</span>
-                    </Button>
-
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="border-neutral-300 text-neutral-800 font-mono text-xs font-bold px-3 py-2 rounded-xl"
-                    >
-                      <FileText className="w-3.5 h-3.5 mr-1" />
-                      <span>Чек</span>
-                    </Button>
                   </div>
                 </div>
 
