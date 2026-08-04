@@ -13,15 +13,6 @@ export interface Product {
   badge?: string;
 }
 
-export interface Product {
-  id: number;
-  name: string;
-  price: number;
-  image: string;
-  secondaryImage?: string;
-  badge?: string;
-}
-
 interface ProductCardProps {
   product: Product;
   isFavorite?: boolean;
@@ -75,7 +66,7 @@ export default function ProductCard({
 
         {/* Badge if exists */}
         {product.badge && (
-          <span className="absolute top-2.5 left-2.5 px-2 py-0.5 bg-black text-white text-[9px] font-extrabold uppercase tracking-wider rounded-md font-sans">
+          <span className="absolute top-2.5 left-2.5 px-2.5 py-0.5 bg-black text-white text-[10px] font-extrabold uppercase tracking-wider rounded-md font-sans">
             {product.badge}
           </span>
         )}
@@ -104,10 +95,10 @@ export default function ProductCard({
       {/* Info & Add to Cart */}
       <div className="flex items-center justify-between px-1 gap-2">
         <div className="flex flex-col min-w-0 flex-1">
-          <h3 className="text-xs md:text-sm font-semibold text-neutral-900 truncate leading-snug tracking-tight">
+          <h3 className="text-sm md:text-base font-bold text-neutral-900 truncate leading-snug tracking-tight">
             {product.name}
           </h3>
-          <span className="text-xs md:text-sm font-extrabold text-neutral-900 leading-tight font-mono">
+          <span className="text-sm md:text-base font-black text-black leading-tight font-mono">
             {formatPrice(product.price)}
           </span>
         </div>
@@ -115,7 +106,7 @@ export default function ProductCard({
         <motion.button
           whileTap={{ scale: 0.88 }}
           aria-label="Добавить в корзину"
-          className="w-9 h-9 min-w-[36px] min-h-[36px] rounded-xl bg-neutral-900 text-white hover:bg-black flex items-center justify-center transition-colors flex-shrink-0 shadow-2xs"
+          className="w-10 h-10 min-w-[40px] min-h-[40px] rounded-xl bg-black text-white hover:bg-neutral-800 flex items-center justify-center transition-colors flex-shrink-0 shadow-sm"
         >
           <ShoppingBag className="w-4 h-4" />
         </motion.button>

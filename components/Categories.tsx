@@ -67,13 +67,13 @@ export default function Categories() {
   };
 
   return (
-    <section className="py-8 bg-[#E8E8E6] font-sans">
+    <section className="py-12 md:py-16 bg-[#E8E8E4] font-sans">
       <div className="max-w-5xl mx-auto px-4">
 
         {/* Section Header */}
-        <div className="flex items-center justify-between mb-5">
+        <div className="flex items-center justify-between mb-6">
           <div>
-            <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-neutral-400 font-mono mb-1">
+            <p className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-neutral-400 font-mono mb-1">
               BROWSE BY CATEGORY
             </p>
             <h2 className="font-display text-2xl md:text-3xl uppercase tracking-wide text-[#0D0E10]">
@@ -103,7 +103,7 @@ export default function Categories() {
         {/* Scrollable Cards Row */}
         <div
           ref={scrollRef}
-          className="flex gap-3 overflow-x-auto no-scrollbar scroll-smooth pb-2"
+          className="flex gap-4 overflow-x-auto no-scrollbar scroll-smooth pb-2"
         >
           {categories.map((cat, idx) => (
             <motion.div
@@ -115,37 +115,37 @@ export default function Categories() {
             >
               <Link href={`/catalog?category=${cat.id}`} className="block group">
                 <div
-                  className="relative w-[160px] sm:w-[190px] h-[220px] sm:h-[250px] rounded-2xl overflow-hidden border border-neutral-200/80 shadow-sm transition-all duration-300 group-hover:shadow-md group-hover:-translate-y-1"
+                  className="relative w-[180px] sm:w-[220px] h-[260px] sm:h-[295px] rounded-2xl overflow-hidden border border-neutral-200/80 shadow-sm transition-all duration-300 group-hover:shadow-md group-hover:-translate-y-1.5"
                   style={{ backgroundColor: cat.accent }}
                 >
-                  {/* Product Image - fills most of card */}
-                  <div className="absolute inset-0 flex items-center justify-center p-4 pt-6">
+                  {/* Product Image - larger fit */}
+                  <div className="absolute inset-0 flex items-center justify-center p-4 pt-8">
                     <img
                       src={cat.image}
                       alt={cat.name}
-                      className="w-full h-[130px] sm:h-[150px] object-contain transition-transform duration-500 group-hover:scale-110"
+                      className="w-full h-[155px] sm:h-[185px] object-contain transition-transform duration-500 group-hover:scale-110"
                     />
                   </div>
 
                   {/* Label top-left */}
-                  <div className="absolute top-3 left-3">
-                    <span className="text-[9px] font-extrabold uppercase tracking-[0.18em] text-neutral-400 font-mono">
+                  <div className="absolute top-3.5 left-3.5">
+                    <span className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-neutral-500 font-mono">
                       {cat.label}
                     </span>
                   </div>
 
                   {/* Bottom info bar */}
-                  <div className="absolute bottom-0 left-0 right-0 bg-white/90 backdrop-blur-sm border-t border-neutral-200/60 px-3 py-2.5 flex items-center justify-between">
+                  <div className="absolute bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-neutral-200/60 px-4 py-3 flex items-center justify-between">
                     <div>
-                      <p className="font-display text-base text-[#0D0E10] uppercase tracking-wide leading-none">
+                      <p className="font-display text-lg sm:text-2xl text-[#0D0E10] uppercase tracking-wide leading-none">
                         {cat.name}
                       </p>
-                      <p className="text-[10px] text-neutral-500 font-bold font-mono mt-0.5">
+                      <p className="text-xs text-neutral-500 font-bold font-mono mt-1">
                         {cat.count}
                       </p>
                     </div>
-                    <div className="w-7 h-7 rounded-lg bg-[#0D0E10] flex items-center justify-center group-hover:bg-neutral-700 transition-colors">
-                      <ArrowRight className="w-3.5 h-3.5 text-white" />
+                    <div className="w-8 h-8 rounded-xl bg-[#0D0E10] flex items-center justify-center group-hover:bg-neutral-800 transition-colors shrink-0">
+                      <ArrowRight className="w-4 h-4 text-white" />
                     </div>
                   </div>
                 </div>

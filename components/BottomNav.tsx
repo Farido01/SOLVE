@@ -45,7 +45,7 @@ export default function BottomNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 h-16 bg-[#E8E8E6]/95 backdrop-blur-md border-t border-neutral-200/80 flex items-center justify-around px-2 pb-[env(safe-area-inset-bottom,0)] font-sans">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 h-16 bg-[#E8E8E4]/95 backdrop-blur-md border-t border-neutral-200/80 flex items-center justify-around px-3 pb-[env(safe-area-inset-bottom,0)] font-sans shadow-lg">
       {navItems.map((item) => {
         const isActive = item.href === '/' ? pathname === '/' : pathname.startsWith(item.href);
         return (
@@ -53,28 +53,38 @@ export default function BottomNav() {
             key={item.id}
             href={item.href}
             aria-label={item.label}
-            className={`relative flex flex-col items-center justify-center gap-0.5 py-1 px-4 text-xs font-medium transition-colors min-h-[48px] min-w-[56px] ${
-              isActive ? 'text-black font-bold' : 'text-neutral-400 hover:text-neutral-800'
-            }`}
+            className="relative flex items-center justify-center min-h-[48px] min-w-[64px]"
           >
-            {/* Active Top Indicator Bar */}
+            {/* Active Dark Capsule Background */}
             {isActive && (
               <motion.div
-                layoutId="bottom-nav-active"
-                className="absolute top-0 w-8 h-[2px] bg-black rounded-full"
-                transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                layoutId="bottom-nav-active-pill"
+                className="absolute inset-x-1 inset-y-1 bg-black rounded-2xl shadow-sm"
+                transition={{ type: 'spring', stiffness: 450, damping: 32 }}
               />
             )}
 
-            <motion.div whileTap={{ scale: 0.85 }} className="relative flex items-center justify-center p-1">
-              {item.icon}
-              {item.badge && (
-                <span className="absolute -top-1 -right-2.5 w-4 h-4 bg-black text-white text-[9px] font-extrabold rounded-full flex items-center justify-center border border-white">
-                  {item.badge}
-                </span>
-              )}
-            </motion.div>
-            <span className="text-[10px] tracking-tight">{item.label}</span>
+            <div
+              className={`relative z-10 flex flex-col items-center justify-center gap-0.5 px-3 py-1 text-xs transition-colors ${
+                isActive ? 'text-white font-extrabold' : 'text-neutral-500 hover:text-black font-semibold'
+              }`}
+            >
+              <motion.div whileTap={{ scale: 0.85 }} className="relative flex items-center justify-center">
+                {item.icon}
+                {item.badge && (
+                  <span
+                    className={`absolute -top-1.5 -right-2.5 w-4 h-4 text-[9px] font-black rounded-full flex items-center justify-center border ${
+                      isActive
+                        ? 'bg-white text-black border-black'
+                        : 'bg-black text-white border-white'
+                    }`}
+                  >
+                    {item.badge}
+                  </span>
+                )}
+              </motion.div>
+              <span className="text-[10px] tracking-tight">{item.label}</span>
+            </div>
           </Link>
         );
       })}

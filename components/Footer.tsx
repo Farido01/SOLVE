@@ -1,8 +1,40 @@
 'use client';
 
 import { useState } from 'react';
-import { Send, Check } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Send, Check, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+
+function FooterAccordion({ title, children }: { title: string; children: React.ReactNode }) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div className="border-b border-neutral-800/80 py-2">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full flex items-center justify-between py-1 text-left uppercase tracking-wider text-white font-mono font-extrabold text-xs"
+      >
+        <span>{title}</span>
+        <motion.div animate={{ rotate: isOpen ? 180 : 0 }} transition={{ duration: 0.2 }}>
+          <ChevronDown className="w-4 h-4 text-neutral-400" />
+        </motion.div>
+      </button>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.22 }}
+            className="overflow-hidden"
+          >
+            {children}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
 
 export default function Footer() {
   const [email, setEmail] = useState('');
@@ -61,8 +93,8 @@ export default function Footer() {
           </form>
         </div>
 
-        {/* Footer Navigation Columns */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 pt-4 border-b border-neutral-800/80 pb-8 text-xs">
+        {/* Footer Navigation Columns (Grid for Desktop, Accordion for Mobile) */}
+        <div className="hidden sm:grid grid-cols-2 md:grid-cols-4 gap-8 pt-4 border-b border-neutral-800/80 pb-8 text-xs">
           {/* Col 1: Brand Info */}
           <div className="space-y-3 col-span-2 md:col-span-1">
             <span className="font-display text-3xl tracking-widest text-white block">SOLVE</span>
@@ -73,19 +105,19 @@ export default function Footer() {
 
           {/* Col 2: Catalog */}
           <div className="space-y-3">
-            <h4 className="font-extrabold uppercase tracking-wider text-white">КАТАЛОГ</h4>
+            <h4 className="font-extrabold uppercase tracking-wider text-white font-mono">КАТАЛОГ</h4>
             <ul className="space-y-2 text-neutral-400 font-medium">
-              <li><a href="#" className="hover:text-white transition-colors">Одежда</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Кроссовки</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Брелоки</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Аксессуары</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Сумки</a></li>
+              <li><a href="/catalog?category=clothing" className="hover:text-white transition-colors">Одежда</a></li>
+              <li><a href="/catalog?category=sneakers" className="hover:text-white transition-colors">Кроссовки</a></li>
+              <li><a href="/catalog?category=keychains" className="hover:text-white transition-colors">Брелоки</a></li>
+              <li><a href="/catalog?category=accessories" className="hover:text-white transition-colors">Аксессуары</a></li>
+              <li><a href="/catalog?category=bags" className="hover:text-white transition-colors">Сумки</a></li>
             </ul>
           </div>
 
           {/* Col 3: Information */}
           <div className="space-y-3">
-            <h4 className="font-extrabold uppercase tracking-wider text-white">ПОКУПАТЕЛЯМ</h4>
+            <h4 className="font-extrabold uppercase tracking-wider text-white font-mono">ПОКУПАТЕЛЯМ</h4>
             <ul className="space-y-2 text-neutral-400 font-medium">
               <li><a href="#" className="hover:text-white transition-colors">Доставка и оплата</a></li>
               <li><a href="#" className="hover:text-white transition-colors">Гарантия подлинности</a></li>
@@ -97,25 +129,67 @@ export default function Footer() {
 
           {/* Col 4: Social & Payment */}
           <div className="space-y-3 col-span-2 md:col-span-1">
-            <h4 className="font-extrabold uppercase tracking-wider text-white">МЫ В СОЦСЕТЯХ</h4>
+            <h4 className="font-extrabold uppercase tracking-wider text-white font-mono">МЫ В СОЦСЕТЯХ</h4>
             <div className="flex gap-2 text-neutral-400">
-              <a href="#" className="p-2 bg-neutral-900 rounded-xl hover:text-white hover:bg-neutral-800 border border-neutral-800 transition-colors font-bold text-[11px]">
+              <a href="#" className="p-2.5 bg-neutral-900 rounded-xl hover:text-white hover:bg-neutral-800 border border-neutral-800 transition-colors font-bold text-[11px] font-mono">
                 TELEGRAM
               </a>
-              <a href="#" className="p-2 bg-neutral-900 rounded-xl hover:text-white hover:bg-neutral-800 border border-neutral-800 transition-colors font-bold text-[11px]">
+              <a href="#" className="p-2.5 bg-neutral-900 rounded-xl hover:text-white hover:bg-neutral-800 border border-neutral-800 transition-colors font-bold text-[11px] font-mono">
                 VKONTAKTE
               </a>
             </div>
 
             <div className="pt-2">
-              <span className="text-[10px] font-bold text-neutral-500 uppercase tracking-wider block mb-1">
+              <span className="text-[10px] font-bold text-neutral-500 uppercase tracking-wider block mb-1 font-mono">
                 СПОСОБЫ ОПЛАТЫ
               </span>
-              <div className="flex gap-1.5 text-[10px] font-bold text-neutral-400">
+              <div className="flex gap-1.5 text-[10px] font-bold text-neutral-400 font-mono">
                 <span className="px-2 py-1 bg-neutral-900 border border-neutral-800 rounded">СБП</span>
                 <span className="px-2 py-1 bg-neutral-900 border border-neutral-800 rounded">МИР</span>
                 <span className="px-2 py-1 bg-neutral-900 border border-neutral-800 rounded">ДОЛЯМИ</span>
               </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile Accordion View (sm:hidden) */}
+        <div className="sm:hidden space-y-3 border-b border-neutral-800/80 pb-6 text-xs">
+          <div className="space-y-2 pb-2">
+            <span className="font-display text-3xl tracking-widest text-white block">SOLVE</span>
+            <p className="text-neutral-400 leading-relaxed text-xs">
+              Интернет-магазин оригинальной уличной одежды, кроссовок и аксессуаров.
+            </p>
+          </div>
+
+          <FooterAccordion title="КАТАЛОГ">
+            <ul className="space-y-2.5 text-neutral-400 font-medium py-2">
+              <li><a href="/catalog?category=clothing" className="hover:text-white transition-colors">Одежда</a></li>
+              <li><a href="/catalog?category=sneakers" className="hover:text-white transition-colors">Кроссовки</a></li>
+              <li><a href="/catalog?category=keychains" className="hover:text-white transition-colors">Брелоки</a></li>
+              <li><a href="/catalog?category=accessories" className="hover:text-white transition-colors">Аксессуары</a></li>
+              <li><a href="/catalog?category=bags" className="hover:text-white transition-colors">Сумки</a></li>
+            </ul>
+          </FooterAccordion>
+
+          <FooterAccordion title="ПОКУПАТЕЛЯМ">
+            <ul className="space-y-2.5 text-neutral-400 font-medium py-2">
+              <li><a href="#" className="hover:text-white transition-colors">Доставка и оплата</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Гарантия подлинности</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Обмен и возврат</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Таблица размеров</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Контакты</a></li>
+            </ul>
+          </FooterAccordion>
+
+          <div className="pt-3 space-y-2">
+            <h4 className="font-extrabold uppercase tracking-wider text-white text-xs font-mono">СОЦСЕТИ И ОПЛАТА</h4>
+            <div className="flex gap-2 text-neutral-400 pt-1">
+              <a href="#" className="px-4 py-2 bg-neutral-900 rounded-xl hover:text-white border border-neutral-800 font-bold text-xs font-mono">
+                TELEGRAM
+              </a>
+              <a href="#" className="px-4 py-2 bg-neutral-900 rounded-xl hover:text-white border border-neutral-800 font-bold text-xs font-mono">
+                VKONTAKTE
+              </a>
             </div>
           </div>
         </div>

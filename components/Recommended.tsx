@@ -65,10 +65,10 @@ export default function Recommended() {
       : recommendedProducts.filter((p) => p.category === activeTab);
 
   return (
-    <section className="py-8 bg-[#E8E8E6]">
+    <section className="py-12 md:py-16 bg-[#E8E8E4]">
       <div className="max-w-5xl mx-auto px-4">
         {/* Section Header */}
-        <div className="mb-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-2">
             <Sparkles className="w-5 h-5 text-neutral-900" />
             <h2 className="text-2xl md:text-3xl font-display text-[#0D0E10] tracking-wider uppercase leading-none">
@@ -102,7 +102,7 @@ export default function Recommended() {
           </div>
         </div>
 
-        {/* Grid of Recommended Products */}
+        {/* Grid of Recommended Products (2x2 on mobile, 4 columns on desktop) */}
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}
@@ -110,13 +110,13 @@ export default function Recommended() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.25 }}
-            className="flex gap-4 overflow-x-auto no-scrollbar scroll-smooth py-1"
+            className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6"
           >
             {filteredProducts.map((product) => (
               <ProductCard
                 key={product.id}
                 product={product}
-                className="w-[160px] sm:w-[190px] md:w-[210px] flex-shrink-0"
+                className="w-full"
               />
             ))}
           </motion.div>
