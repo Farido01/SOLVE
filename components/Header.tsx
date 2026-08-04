@@ -12,7 +12,7 @@ export default function Header() {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 h-14 bg-[#E8E8E6]/90 backdrop-blur-md border-b border-neutral-200/80 flex items-center justify-between px-4">
+      <header className="fixed top-0 left-0 right-0 z-50 h-14 bg-[#F9F9F8]/90 backdrop-blur-md border-b border-neutral-200/80 flex items-center justify-between px-4">
         {/* Menu Toggle */}
         <Button
           variant="ghost"
@@ -65,7 +65,7 @@ export default function Header() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="fixed top-14 left-0 right-0 z-40 bg-[#E8E8E6] border-b border-neutral-200 p-3 shadow-md"
+            className="fixed top-14 left-0 right-0 z-40 bg-[#F9F9F8] border-b border-neutral-200 p-3 shadow-md"
           >
             <div className="relative max-w-md mx-auto flex items-center">
               <Search className="absolute left-3 w-4 h-4 text-neutral-400" />
@@ -105,7 +105,7 @@ export default function Header() {
               animate={{ x: 0 }}
               exit={{ x: '-100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 250 }}
-              className="fixed top-0 left-0 bottom-0 z-50 w-4/5 max-w-xs bg-[#E8E8E6] p-6 shadow-2xl flex flex-col justify-between"
+              className="fixed top-0 left-0 bottom-0 z-50 w-4/5 max-w-xs bg-[#F9F9F8] p-6 shadow-2xl flex flex-col justify-between"
             >
               <div>
                 <div className="flex items-center justify-between mb-8">

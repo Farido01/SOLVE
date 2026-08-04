@@ -68,7 +68,7 @@ export default function Lookbook() {
   const currentLook = looks[activeLookIndex];
 
   return (
-    <section className="py-12 md:py-16 bg-[#E8E8E4]">
+    <section className="py-6 md:py-8 bg-[#F9F9F8] border-b border-neutral-200/60">
       <div className="px-4 max-w-5xl mx-auto">
         {/* Section Header */}
         <div className="flex items-center justify-between mb-6">

@@ -21,7 +21,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="bg-[#E8E8E4] text-[#0D0E10] antialiased min-h-screen flex flex-col font-sans">
+      <body className="bg-[#F9F9F8] text-[#0D0E10] antialiased min-h-screen flex flex-col font-sans">
         {children}
       </body>
     </html>

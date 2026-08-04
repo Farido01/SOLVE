@@ -27,14 +27,14 @@ const features = [
 
 export default function BrandFeatures() {
   return (
-    <section className="py-10 bg-[#E8E8E6]">
+    <section className="py-6 md:py-8 bg-[#F9F9F8] border-b border-neutral-200/60">
       <div className="px-4 max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4">
         {features.map((item, idx) => (
           <div
             key={idx}
             className="flex flex-col items-start p-4 md:p-5 rounded-2xl bg-white border border-neutral-200/80 shadow-2xs space-y-2.5 font-sans"
           >
-            <div className="p-2.5 bg-[#E8E8E6] rounded-xl border border-neutral-200/80">
+            <div className="p-2.5 bg-[#F9F9F8] rounded-xl border border-neutral-200/80">
               {item.icon}
             </div>
             <h3 className="text-xs md:text-sm font-extrabold text-neutral-900 tracking-tight uppercase">

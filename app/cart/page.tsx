@@ -114,7 +114,7 @@ export default function CartPage() {
   const freeShipProgress = Math.min(100, Math.round((subtotal / 10000) * 100));
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#E8E8E6] text-[#0D0E10] select-none font-sans">
+    <div className="min-h-screen flex flex-col bg-[#F9F9F8] text-[#0D0E10] select-none font-sans">
       <Header />
 
       <main className="flex-1 mt-14 pb-32">
@@ -227,10 +227,10 @@ export default function CartPage() {
 
                         {/* Option Pills */}
                         <div className="flex flex-wrap items-center gap-1.5 my-2.5">
-                          <span className="text-[10px] font-bold bg-[#E8E8E6] text-neutral-600 px-2.5 py-1 rounded-lg border border-neutral-200">
+                          <span className="text-[10px] font-bold bg-[#F9F9F8] text-neutral-600 px-2.5 py-1 rounded-lg border border-neutral-200">
                             Размер: {item.size}
                           </span>
-                          <span className="text-[10px] font-bold bg-[#E8E8E6] text-neutral-600 px-2.5 py-1 rounded-lg border border-neutral-200">
+                          <span className="text-[10px] font-bold bg-[#F9F9F8] text-neutral-600 px-2.5 py-1 rounded-lg border border-neutral-200">
                             {item.color}
                           </span>
                           {item.inStock && (
@@ -240,7 +240,7 @@ export default function CartPage() {
 
                         {/* Qty + Price */}
                         <div className="flex items-center justify-between gap-2 pt-2 border-t border-neutral-100">
-                          <div className="flex items-center gap-1 bg-[#E8E8E6] p-1 rounded-xl border border-neutral-200">
+                          <div className="flex items-center gap-1 bg-[#F9F9F8] p-1 rounded-xl border border-neutral-200">
                             <button
                               onClick={() => handleDecrease(item.id)}
                               className="w-8 h-8 rounded-lg bg-white hover:bg-[#0D0E10] hover:text-white flex items-center justify-center text-neutral-700 transition-all shadow-sm"
@@ -311,7 +311,7 @@ export default function CartPage() {
                               value={promoCode}
                               onChange={(e) => { setPromoCode(e.target.value); setPromoStatus('idle'); }}
                               placeholder="Введите промокод..."
-                              className="flex-1 px-4 py-2.5 text-xs bg-[#E8E8E6] border border-neutral-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0D0E10] font-mono font-bold uppercase placeholder:normal-case placeholder:font-normal placeholder:text-neutral-400"
+                              className="flex-1 px-4 py-2.5 text-xs bg-[#F9F9F8] border border-neutral-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0D0E10] font-mono font-bold uppercase placeholder:normal-case placeholder:font-normal placeholder:text-neutral-400"
                             />
                             <button
                               type="submit"
@@ -345,7 +345,7 @@ export default function CartPage() {
                     {crossSellItems.map((cs) => (
                       <div
                         key={cs.id}
-                        className="flex items-center gap-3 p-3 bg-[#E8E8E6] rounded-2xl border border-neutral-200 hover:border-neutral-300 transition-colors"
+                        className="flex items-center gap-3 p-3 bg-[#F9F9F8] rounded-2xl border border-neutral-200 hover:border-neutral-300 transition-colors"
                       >
                         <div className="w-14 h-14 rounded-xl overflow-hidden bg-[#EBECEE] border border-neutral-200 shrink-0">
                           <img src={cs.image} alt={cs.name} className="w-full h-full object-cover" />
