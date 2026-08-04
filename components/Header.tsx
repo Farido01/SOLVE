@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Menu, Search, ShoppingBag, X } from 'lucide-react';
+import { Menu, Search, ShoppingBag, User, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 
@@ -40,6 +40,17 @@ export default function Header() {
           >
             <Search className="w-5 h-5" />
           </Button>
+
+          <Link href="/profile">
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label="Профиль"
+              className="text-neutral-900 hover:bg-neutral-200/60 min-h-[44px] min-w-[44px]"
+            >
+              <User className="w-5 h-5" />
+            </Button>
+          </Link>
 
           <Link href="/cart">
             <Button
