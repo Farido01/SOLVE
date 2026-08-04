@@ -184,6 +184,7 @@ export default function CatalogPage() {
   const [sortBy, setSortBy] = useState<'popular' | 'price-asc' | 'price-desc' | 'rating'>('popular');
   const [isFilterPanelOpen, setIsFilterPanelOpen] = useState(false);
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
+  const [isSizeOpen, setIsSizeOpen] = useState(false);
   const [gridCols, setGridCols] = useState<3 | 4>(4);
 
   // Active filter count
@@ -401,17 +402,17 @@ export default function CatalogPage() {
                 className="overflow-hidden"
               >
                 <div className="max-w-6xl mx-auto mt-3.5 p-5 bg-white rounded-3xl border border-neutral-200/90 shadow-sm space-y-5 font-sans">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-start">
                     {/* Search Field */}
-                    <div className="space-y-2">
-                      <span className="text-[11px] font-extrabold uppercase tracking-wider text-neutral-900 block">Поиск</span>
+                    <div className="space-y-1.5">
+                      <span className="text-[11px] font-extrabold uppercase tracking-wider text-neutral-900 block font-mono">Поиск</span>
                       <div className="relative">
                         <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
                         <input
                           type="text"
                           value={searchQuery}
                           onChange={(e) => setSearchQuery(e.target.value)}
-                          placeholder="Название..."
+                          placeholder="Название товара..."
                           className="w-full pl-10 pr-8 py-2 text-xs bg-neutral-100/90 rounded-xl focus:outline-none focus:ring-2 focus:ring-black font-sans"
                         />
                         {searchQuery && (
@@ -425,40 +426,32 @@ export default function CatalogPage() {
                       </div>
                     </div>
 
-                    {/* Brands */}
-                    <div className="space-y-2">
-                      <span className="text-[11px] font-extrabold uppercase tracking-wider text-neutral-900 block">Бренд</span>
-                      <div className="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto no-scrollbar">
-                        {brandsList.map((brand) => {
-                          const isSelected = selectedBrand === brand;
-                          return (
-                            <button
-                              key={brand}
-                              onClick={() => setSelectedBrand(brand)}
-                              className={`px-3 py-1 rounded-xl text-xs font-bold transition-all border ${
-                                isSelected
-                                  ? 'bg-black text-white border-black'
-                                  : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200 border-neutral-200'
-                              }`}
-                            >
-                              {brand}
-                            </button>
-                          );
-                        })}
-                      </div>
+                    {/* Brands Dropdown/Select */}
+                    <div className="space-y-1.5">
+                      <span className="text-[11px] font-extrabold uppercase tracking-wider text-neutral-900 block font-mono">Бренд</span>
+                      <select
+                        value={selectedBrand}
+                        onChange={(e) => setSelectedBrand(e.target.value)}
+                        className="w-full px-3 py-2 text-xs font-bold bg-neutral-100 rounded-xl border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-black font-sans uppercase cursor-pointer"
+                      >
+                        {brandsList.map((brand) => (
+                          <option key={brand} value={brand}>
+                            {brand === 'All' ? 'Все бренды' : brand}
+                          </option>
+                        ))}
+                      </select>
                     </div>
 
-                    {/* Price Slider & Manual Number Inputs */}
-                    <div className="space-y-2">
+                    {/* Price Slider & Inputs */}
+                    <div className="space-y-1.5">
                       <div className="flex items-center justify-between text-[11px]">
-                        <span className="font-extrabold uppercase tracking-wider text-neutral-900">Стоимость (₽)</span>
+                        <span className="font-extrabold uppercase tracking-wider text-neutral-900 font-mono">Стоимость (₽)</span>
                         <span className="font-extrabold text-black font-mono">до {priceRange.toLocaleString('ru-RU')} ₽</span>
                       </div>
 
-                      {/* Manual Price Inputs */}
                       <div className="flex items-center gap-2">
                         <div className="flex-1 relative">
-                          <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[10px] font-bold text-neutral-400 font-sans">от</span>
+                          <span className="absolute left-2 top-1/2 -translate-y-1/2 text-[9px] font-bold text-neutral-400">от</span>
                           <input
                             type="number"
                             min={0}
@@ -466,12 +459,12 @@ export default function CatalogPage() {
                             value={minPrice}
                             onChange={(e) => setMinPrice(Number(e.target.value))}
                             placeholder="0"
-                            className="w-full pl-7 pr-2 py-1.5 text-xs bg-neutral-100/90 rounded-xl focus:outline-none focus:ring-2 focus:ring-black font-mono font-bold"
+                            className="w-full pl-6 pr-2 py-1.5 text-xs bg-neutral-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-black font-mono font-bold"
                           />
                         </div>
                         <span className="text-neutral-300 font-bold">—</span>
                         <div className="flex-1 relative">
-                          <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[10px] font-bold text-neutral-400 font-sans">до</span>
+                          <span className="absolute left-2 top-1/2 -translate-y-1/2 text-[9px] font-bold text-neutral-400">до</span>
                           <input
                             type="number"
                             min={minPrice}
@@ -479,52 +472,78 @@ export default function CatalogPage() {
                             value={priceRange}
                             onChange={(e) => setPriceRange(Number(e.target.value))}
                             placeholder="20000"
-                            className="w-full pl-7 pr-2 py-1.5 text-xs bg-neutral-100/90 rounded-xl focus:outline-none focus:ring-2 focus:ring-black font-mono font-bold"
+                            className="w-full pl-6 pr-2 py-1.5 text-xs bg-neutral-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-black font-mono font-bold"
                           />
                         </div>
                       </div>
-
-                      <input
-                        type="range"
-                        min={1000}
-                        max={20000}
-                        step={500}
-                        value={priceRange}
-                        onChange={(e) => setPriceRange(Number(e.target.value))}
-                        className="w-full accent-black cursor-pointer pt-1"
-                      />
                     </div>
 
-                    {/* Size Selector */}
-                    <div className="space-y-2">
-                      <span className="text-[11px] font-extrabold uppercase tracking-wider text-neutral-900 block">Размер</span>
-                      <div className="flex flex-wrap gap-1.5">
-                        <button
-                          onClick={() => setSelectedSize('All')}
-                          className={`px-2.5 py-1 rounded-lg text-xs font-bold border transition-all ${
-                            selectedSize === 'All'
-                              ? 'bg-black text-white border-black'
-                              : 'bg-neutral-100 text-neutral-700 border-neutral-200 hover:bg-neutral-200'
-                          }`}
-                        >
-                          Все
-                        </button>
-                        {sizesList.map((sz) => (
+                    {/* Collapsible Size Selector Button */}
+                    <div className="space-y-1.5">
+                      <span className="text-[11px] font-extrabold uppercase tracking-wider text-neutral-900 block font-mono">Размер</span>
+                      <button
+                        onClick={() => setIsSizeOpen(!isSizeOpen)}
+                        className={`w-full px-3 py-2 text-xs font-extrabold rounded-xl border transition-all flex items-center justify-between font-sans ${
+                          selectedSize !== 'All' || isSizeOpen
+                            ? 'bg-black text-white border-black shadow-xs'
+                            : 'bg-neutral-100 text-neutral-800 border-neutral-200 hover:border-neutral-400'
+                        }`}
+                      >
+                        <span>
+                          {selectedSize === 'All' ? 'ВЫБРАТЬ РАЗМЕР (ВСЕ)' : `РАЗМЕР: ${selectedSize}`}
+                        </span>
+                        <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isSizeOpen ? 'rotate-180' : ''}`} />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Expandable Size Grid (Opens on click) */}
+                  <AnimatePresence>
+                    {isSizeOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="overflow-hidden pt-2 border-t border-neutral-100"
+                      >
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-[10px] font-extrabold uppercase text-neutral-400 font-mono">ВЫБЕРИТЕ ВАШ РАЗМЕР:</span>
                           <button
-                            key={sz}
-                            onClick={() => setSelectedSize(sz)}
-                            className={`px-2.5 py-1 rounded-lg text-xs font-bold border transition-all ${
-                              selectedSize === sz
-                                ? 'bg-black text-white border-black'
+                            onClick={() => setSelectedSize('All')}
+                            className="text-[10px] font-extrabold text-neutral-600 hover:text-black underline font-mono"
+                          >
+                            Сбросить размер
+                          </button>
+                        </div>
+                        <div className="flex flex-wrap gap-1.5">
+                          <button
+                            onClick={() => { setSelectedSize('All'); setIsSizeOpen(false); }}
+                            className={`px-3 py-1.5 rounded-xl text-xs font-bold border transition-all ${
+                              selectedSize === 'All'
+                                ? 'bg-black text-white border-black shadow-2xs'
                                 : 'bg-neutral-100 text-neutral-700 border-neutral-200 hover:bg-neutral-200'
                             }`}
                           >
-                            {sz}
+                            Все размеры
                           </button>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
+                          {sizesList.map((sz) => (
+                            <button
+                              key={sz}
+                              onClick={() => { setSelectedSize(sz); setIsSizeOpen(false); }}
+                              className={`px-3 py-1.5 rounded-xl text-xs font-bold border transition-all ${
+                                selectedSize === sz
+                                  ? 'bg-black text-white border-black shadow-2xs'
+                                  : 'bg-neutral-100 text-neutral-700 border-neutral-200 hover:bg-neutral-200'
+                              }`}
+                            >
+                              {sz}
+                            </button>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
 
                   {/* Options & Reset Footer */}
                   <div className="flex items-center justify-between pt-3 border-t border-neutral-100 text-xs">
