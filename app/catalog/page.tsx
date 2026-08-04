@@ -3,7 +3,7 @@
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { SlidersHorizontal, ArrowUpDown, X, Search, RotateCcw, ChevronRight, LayoutGrid, Grid2X2, Sparkles, Check, Tag } from 'lucide-react';
+import { SlidersHorizontal, ArrowUpDown, X, Search, RotateCcw, ChevronRight, LayoutGrid, Grid2X2, Filter, ChevronDown } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import BottomNav from '@/components/BottomNav';
@@ -153,58 +153,58 @@ const mockProducts: CatalogProduct[] = [
   },
 ];
 
-const categoryTiles = [
-  { id: 'all', name: 'ВСЕ ТОВАРЫ', count: '10 моделей', image: '/images/hero-1.png' },
-  { id: 'clothing', name: 'ОДЕЖДА', count: '3 модели', image: '/images/cat-clothing.png' },
-  { id: 'sneakers', name: 'КРОССОВКИ', count: '3 модели', image: '/images/cat-sneakers.png' },
-  { id: 'keychains', name: 'БРЕЛОКИ', count: '1 модель', image: '/images/cat-keychains.png' },
-  { id: 'accessories', name: 'АКСЕССУАРЫ', count: '1 модель', image: '/images/cat-accessories.png' },
-  { id: 'bags', name: 'СУМКИ', count: '2 модели', image: '/images/cat-bags.png' },
+const categoryTabs = [
+  { id: 'all', label: 'ВЕСЬ КАТАЛОГ' },
+  { id: 'clothing', label: 'ОДЕЖДА' },
+  { id: 'sneakers', label: 'КРОССОВКИ' },
+  { id: 'keychains', label: 'БРЕЛОКИ' },
+  { id: 'accessories', label: 'АКСЕССУАРЫ' },
+  { id: 'bags', label: 'СУМКИ' },
+];
+
+const visualCategoryCards = [
+  { id: 'all', name: 'Весь каталог', label: 'ALL ITEMS', count: '300+ товаров', image: '/images/hero-1.png' },
+  { id: 'clothing', name: 'Одежда', label: 'CLOTHING', count: '120+ моделей', image: '/images/cat-clothing.png' },
+  { id: 'sneakers', name: 'Кроссовки', label: 'SNEAKERS', count: '80+ моделей', image: '/images/cat-sneakers.png' },
+  { id: 'keychains', name: 'Брелоки', label: 'KEYCHAINS', count: '40+ моделей', image: '/images/cat-keychains.png' },
+  { id: 'accessories', name: 'Аксессуары', label: 'ACCESSORIES', count: '60+ моделей', image: '/images/cat-accessories.png' },
+  { id: 'bags', name: 'Сумки', label: 'BAGS', count: '30+ моделей', image: '/images/cat-bags.png' },
 ];
 
 const brandsList = ['All', 'Solve', 'Nike', 'New Balance', 'Stussy', 'Supreme', 'Off-White'];
-
-const pricePresets = [
-  { id: 'all', label: 'Все цены', min: 0, max: 20000 },
-  { id: 'under5k', label: 'До 5 000 ₽', min: 0, max: 5000 },
-  { id: '5k-10k', label: '5 000 – 10 000 ₽', min: 5000, max: 10000 },
-  { id: 'over10k', label: 'От 10 000 ₽', min: 10000, max: 20000 },
-];
+const sizesList = ['S', 'M', 'L', 'XL', '39', '40', '41', '42', '43', '44'];
 
 export default function CatalogPage() {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedBrand, setSelectedBrand] = useState('All');
-  const [selectedPricePreset, setSelectedPricePreset] = useState('all');
+  const [selectedSize, setSelectedSize] = useState('All');
   const [minPrice, setMinPrice] = useState<number>(0);
   const [priceRange, setPriceRange] = useState<number>(20000);
   const [onlySale, setOnlySale] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState<'popular' | 'price-asc' | 'price-desc' | 'rating'>('popular');
-  const [gridCols, setGridCols] = useState<2 | 3 | 4>(4);
-
-  // Price preset handler
-  const handlePricePresetSelect = (preset: typeof pricePresets[0]) => {
-    setSelectedPricePreset(preset.id);
-    setMinPrice(preset.min);
-    setPriceRange(preset.max);
-  };
+  const [isFilterPanelOpen, setIsFilterPanelOpen] = useState(false);
+  const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
+  const [gridCols, setGridCols] = useState<3 | 4>(4);
 
   // Active filter count
   const activeFilterCount = useMemo(() => {
     let count = 0;
     if (selectedCategory !== 'all') count++;
     if (selectedBrand !== 'All') count++;
-    if (minPrice > 0 || priceRange < 20000) count++;
+    if (selectedSize !== 'All') count++;
+    if (minPrice > 0) count++;
+    if (priceRange < 20000) count++;
     if (onlySale) count++;
     if (searchQuery.trim()) count++;
     return count;
-  }, [selectedCategory, selectedBrand, minPrice, priceRange, onlySale, searchQuery]);
+  }, [selectedCategory, selectedBrand, selectedSize, minPrice, priceRange, onlySale, searchQuery]);
 
   // Reset all filters
   const resetFilters = () => {
     setSelectedCategory('all');
     setSelectedBrand('All');
-    setSelectedPricePreset('all');
+    setSelectedSize('All');
     setMinPrice(0);
     setPriceRange(20000);
     setOnlySale(false);
@@ -218,6 +218,7 @@ export default function CatalogPage() {
       .filter((p) => {
         if (selectedCategory !== 'all' && p.category !== selectedCategory) return false;
         if (selectedBrand !== 'All' && p.brand.toLowerCase() !== selectedBrand.toLowerCase()) return false;
+        if (selectedSize !== 'All' && !p.sizes.includes(selectedSize)) return false;
         if (p.price < minPrice) return false;
         if (p.price > priceRange) return false;
         if (onlySale && !p.isSale) return false;
@@ -230,198 +231,132 @@ export default function CatalogPage() {
         if (sortBy === 'rating') return b.rating - a.rating;
         return b.id - a.id;
       });
-  }, [selectedCategory, selectedBrand, minPrice, priceRange, onlySale, searchQuery, sortBy]);
+  }, [selectedCategory, selectedBrand, selectedSize, minPrice, priceRange, onlySale, searchQuery, sortBy]);
 
   return (
     <div className="min-h-screen flex flex-col bg-[#F9F9F8] text-[#0D0E10] select-none font-sans">
       <Header />
 
       <main className="flex-1 mt-14 pb-28">
-        {/* Editorial Top Banner */}
-        <section className="bg-white border-b border-neutral-200/90 pt-8 pb-6 px-4 md:px-8">
-          <div className="max-w-6xl mx-auto space-y-4">
+        {/* Minimalist Header Banner */}
+        <section className="bg-white border-b border-neutral-200/90 pt-8 pb-8 px-4 md:px-8 relative overflow-hidden bg-[radial-gradient(#e2e4e8_1px,transparent_1px)] [background-size:24px_24px]">
+          <div className="max-w-6xl mx-auto space-y-4 relative z-10">
             {/* Top Breadcrumbs */}
-            <div className="flex items-center gap-2 text-[11px] font-bold text-neutral-400 uppercase tracking-widest font-mono">
+            <div className="flex items-center gap-2 text-[11px] font-bold text-neutral-400 uppercase tracking-widest font-sans">
               <Link href="/" className="hover:text-black transition-colors">Главная</Link>
               <ChevronRight className="w-3 h-3 text-neutral-300" />
               <span className="text-black font-extrabold">Каталог</span>
             </div>
 
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-              <div>
-                <h1 className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-[#0D0E10] uppercase tracking-[0.04em] leading-[0.85]">
+            {/* Main Header & Lighter Highlight Card */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center pt-1">
+              {/* Left Column: Pure Title Only */}
+              <div className="lg:col-span-7">
+                <h1 className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-[#0D0E10] uppercase tracking-[0.05em] leading-[0.9]">
                   КАТАЛОГ SOLVE
                 </h1>
               </div>
 
-              {/* Search Field */}
-              <div className="relative w-full sm:w-72">
-                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Поиск по названию..."
-                  className="w-full pl-10 pr-8 py-2.5 text-xs bg-[#F9F9F8] rounded-xl border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-black font-sans font-medium"
-                />
-                {searchQuery && (
-                  <button
-                    onClick={() => setSearchQuery('')}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-black"
-                  >
-                    <X className="w-3.5 h-3.5" />
-                  </button>
-                )}
-              </div>
-            </div>
-          </div>
-        </section>
+              {/* Right Column: Lighter Featured Drop Hero Highlight Card */}
+              <div className="lg:col-span-5">
+                <div className="bg-[#EBECEE] text-neutral-900 p-5 rounded-3xl relative overflow-hidden border border-neutral-300/80 shadow-2xs group hover:border-neutral-400 transition-all">
+                  <div className="relative z-10 flex items-center gap-4">
+                    <div className="w-20 h-24 sm:w-24 sm:h-28 rounded-2xl overflow-hidden bg-white border border-neutral-300/80 shrink-0">
+                      <img
+                        src="/images/cat-clothing.png"
+                        alt="Featured Drop"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                    </div>
 
-        {/* ── VISUAL CATEGORY TILES (Таблички категорий) ── */}
-        <section className="py-6 px-4 md:px-8 max-w-6xl mx-auto">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-[11px] font-extrabold uppercase tracking-[0.18em] text-neutral-400 font-mono">
-              ВЫБЕРИТЕ КАТЕГОРИЮ
-            </span>
-            <span className="text-xs font-bold font-mono text-neutral-500">
-              {filteredProducts.length} позиций доступно
-            </span>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-            {categoryTiles.map((tile) => {
-              const isSelected = selectedCategory === tile.id;
-              return (
-                <button
-                  key={tile.id}
-                  onClick={() => setSelectedCategory(tile.id)}
-                  className={`p-3 rounded-2xl border text-left transition-all duration-200 flex flex-col justify-between h-28 relative overflow-hidden group ${
-                    isSelected
-                      ? 'bg-black text-white border-black shadow-md scale-[1.02]'
-                      : 'bg-white text-neutral-900 border-neutral-200 hover:border-neutral-400 hover:shadow-xs'
-                  }`}
-                >
-                  <div className="flex items-start justify-between z-10">
-                    <span className={`text-[10px] font-mono font-bold uppercase tracking-wider ${
-                      isSelected ? 'text-neutral-300' : 'text-neutral-400'
-                    }`}>
-                      {tile.count}
-                    </span>
-                    {isSelected && (
-                      <span className="w-4 h-4 rounded-full bg-white text-black flex items-center justify-center text-[10px] font-extrabold">
-                        ✓
+                    <div className="space-y-1.5 flex-1">
+                      <span className="text-[9px] font-extrabold uppercase tracking-widest text-neutral-800 font-mono bg-white px-2.5 py-0.5 rounded-full border border-neutral-300/80">
+                        ФЛАГМАН ДРОПА
                       </span>
-                    )}
+                      <h4 className="font-display text-xl sm:text-2xl text-[#0D0E10] tracking-wider uppercase leading-none">
+                        SOLVE CHAOS HOODIE
+                      </h4>
+                      <p className="text-[11px] text-neutral-600 font-sans line-clamp-1">
+                        Oversized фит • Плотный флис 460г
+                      </p>
+                      <div className="flex items-center justify-between pt-1">
+                        <span className="text-sm font-extrabold text-[#0D0E10] font-mono">4 990 ₽</span>
+                        <span className="text-[10px] font-bold text-neutral-900 underline group-hover:text-black transition-colors">
+                          Смотреть →
+                        </span>
+                      </div>
+                    </div>
                   </div>
-
-                  {/* Tile Product Thumbnail */}
-                  <img
-                    src={tile.image}
-                    alt={tile.name}
-                    className="w-12 h-12 object-contain absolute right-2 bottom-2 opacity-85 group-hover:scale-110 transition-transform duration-300"
-                  />
-
-                  <div className="z-10">
-                    <h3 className={`font-display text-lg uppercase tracking-wide leading-none ${
-                      isSelected ? 'text-white' : 'text-[#0D0E10]'
-                    }`}>
-                      {tile.name}
-                    </h3>
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-        </section>
-
-        {/* ── SECONDARY QUICK FILTER CHIPS (Удобные таблицы фильтров) ── */}
-        <section className="px-4 md:px-8 max-w-6xl mx-auto space-y-4">
-          <div className="bg-white p-4 rounded-3xl border border-neutral-200/90 shadow-2xs space-y-4 font-sans">
-            {/* Row 1: Brand & Price Preset Pills */}
-            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-              {/* Brands Selector Pills */}
-              <div className="space-y-1.5">
-                <span className="text-[10px] font-extrabold uppercase tracking-widest text-neutral-400 block font-mono">БРЕНД:</span>
-                <div className="flex flex-wrap gap-1.5">
-                  {brandsList.map((brand) => {
-                    const isSelected = selectedBrand === brand;
-                    return (
-                      <button
-                        key={brand}
-                        onClick={() => setSelectedBrand(brand)}
-                        className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all border ${
-                          isSelected
-                            ? 'bg-black text-white border-black shadow-xs'
-                            : 'bg-[#F9F9F8] text-neutral-700 hover:text-black border-neutral-200'
-                        }`}
-                      >
-                        {brand === 'All' ? 'Все бренды' : brand}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Price Preset Chips */}
-              <div className="space-y-1.5">
-                <span className="text-[10px] font-extrabold uppercase tracking-widest text-neutral-400 block font-mono">ЦЕНОВОЙ ДИАПАЗОН:</span>
-                <div className="flex flex-wrap gap-1.5">
-                  {pricePresets.map((preset) => {
-                    const isSelected = selectedPricePreset === preset.id;
-                    return (
-                      <button
-                        key={preset.id}
-                        onClick={() => handlePricePresetSelect(preset)}
-                        className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all border ${
-                          isSelected
-                            ? 'bg-black text-white border-black shadow-xs'
-                            : 'bg-[#F9F9F8] text-neutral-700 hover:text-black border-neutral-200'
-                        }`}
-                      >
-                        {preset.label}
-                      </button>
-                    );
-                  })}
                 </div>
               </div>
             </div>
+          </div>
+        </section>
 
-            {/* Row 2: Controls, Toggles, Reset & Grid Mode */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-neutral-100">
-              {/* Left: Discount Toggle & Reset */}
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => setOnlySale(!onlySale)}
-                  className={`px-3.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all border ${
-                    onlySale
-                      ? 'bg-black text-white border-black shadow-xs'
-                      : 'bg-[#F9F9F8] text-neutral-700 hover:text-black border-neutral-200'
-                  }`}
-                >
-                  <Tag className="w-3.5 h-3.5" />
-                  <span>Только со скидкой</span>
-                </button>
+        {/* Refined Sticky Controls Bar */}
+        <div className="sticky top-14 z-30 bg-[#F9F9F8]/95 backdrop-blur-md border-b border-neutral-200/80 py-3.5 px-4 md:px-8">
+          <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+            {/* Category Quick Pills + Visual Cards Button */}
+            <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5">
+              <button
+                onClick={() => setIsCategoryModalOpen(true)}
+                className="px-3.5 py-2 rounded-full text-xs font-black whitespace-nowrap bg-black text-white hover:bg-neutral-800 transition-all border border-black shadow-sm flex items-center gap-1.5 shrink-0"
+              >
+                <LayoutGrid className="w-3.5 h-3.5 text-white" />
+                <span>ВСЕ КАТЕГОРИИ (КАРТОЧКИ)</span>
+              </button>
 
-                {activeFilterCount > 0 && (
+              <div className="w-[1px] h-5 bg-neutral-300 mx-0.5 shrink-0" />
+
+              {categoryTabs.map((tab) => {
+                const isActive = selectedCategory === tab.id;
+                return (
                   <button
-                    onClick={resetFilters}
-                    className="flex items-center gap-1 text-xs font-extrabold text-red-500 hover:text-red-600 px-3 py-1.5 rounded-xl hover:bg-red-50 transition-colors"
+                    key={tab.id}
+                    onClick={() => setSelectedCategory(tab.id)}
+                    className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all border ${
+                      isActive
+                        ? 'bg-black text-white border-black shadow-sm'
+                        : 'bg-white text-neutral-700 hover:text-black border-neutral-200 hover:border-neutral-400 shadow-2xs'
+                    }`}
                   >
-                    <RotateCcw className="w-3.5 h-3.5" />
-                    <span>Сбросить ({activeFilterCount})</span>
+                    {tab.label}
                   </button>
-                )}
-              </div>
+                );
+              })}
+            </div>
 
-              {/* Right: Sort Dropdown & Grid View Toggle */}
-              <div className="flex items-center gap-3">
-                {/* Sort Selector */}
-                <div className="flex items-center gap-2 bg-[#F9F9F8] px-3.5 py-1.5 rounded-xl border border-neutral-200 text-xs font-bold text-neutral-900">
+            {/* Controls Bar: Smooth Inline Filter Toggle, Sort, Grid */}
+            <div className="flex items-center gap-2 justify-between md:justify-end">
+              {/* Toggle Inline Filter Panel */}
+              <button
+                onClick={() => setIsFilterPanelOpen(!isFilterPanelOpen)}
+                className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-extrabold transition-all border ${
+                  isFilterPanelOpen
+                    ? 'bg-black text-white border-black shadow-sm'
+                    : 'bg-white text-neutral-900 border-neutral-200 hover:border-neutral-400 shadow-2xs'
+                }`}
+              >
+                <SlidersHorizontal className="w-3.5 h-3.5" />
+                <span>ФИЛЬТРЫ</span>
+                {activeFilterCount > 0 && (
+                  <span className={`w-4 h-4 rounded-full text-[10px] flex items-center justify-center font-bold ${
+                    isFilterPanelOpen ? 'bg-white text-black' : 'bg-black text-white'
+                  }`}>
+                    {activeFilterCount}
+                  </span>
+                )}
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isFilterPanelOpen ? 'rotate-180' : ''}`} />
+              </button>
+
+              {/* Sort Selector Dropdown */}
+              <div className="relative">
+                <div className="flex items-center gap-2 px-4 py-2 bg-white rounded-full border border-neutral-200 text-xs font-bold text-neutral-900 shadow-2xs">
                   <ArrowUpDown className="w-3.5 h-3.5 text-neutral-500" />
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value as any)}
-                    className="bg-transparent focus:outline-none cursor-pointer text-xs font-bold uppercase font-mono"
+                    className="bg-transparent focus:outline-none cursor-pointer font-sans text-xs font-bold uppercase"
                   >
                     <option value="popular">По популярности</option>
                     <option value="price-asc">Сначала дешевле</option>
@@ -429,81 +364,364 @@ export default function CatalogPage() {
                     <option value="rating">По рейтингу</option>
                   </select>
                 </div>
+              </div>
 
-                {/* Grid Cols Buttons */}
-                <div className="hidden sm:flex items-center bg-[#F9F9F8] p-1 rounded-xl border border-neutral-200">
-                  <button
-                    onClick={() => setGridCols(2)}
-                    className={`px-2.5 py-1 text-xs font-mono font-bold rounded-lg transition-colors ${
-                      gridCols === 2 ? 'bg-black text-white' : 'text-neutral-500 hover:text-black'
-                    }`}
-                  >
-                    2x
-                  </button>
-                  <button
-                    onClick={() => setGridCols(3)}
-                    className={`px-2.5 py-1 text-xs font-mono font-bold rounded-lg transition-colors ${
-                      gridCols === 3 ? 'bg-black text-white' : 'text-neutral-500 hover:text-black'
-                    }`}
-                  >
-                    3x
-                  </button>
-                  <button
-                    onClick={() => setGridCols(4)}
-                    className={`px-2.5 py-1 text-xs font-mono font-bold rounded-lg transition-colors ${
-                      gridCols === 4 ? 'bg-black text-white' : 'text-neutral-500 hover:text-black'
-                    }`}
-                  >
-                    4x
-                  </button>
-                </div>
+              {/* Grid Layout Switcher (Desktop) */}
+              <div className="hidden lg:flex items-center bg-white p-1 rounded-full border border-neutral-200 shadow-2xs">
+                <button
+                  onClick={() => setGridCols(3)}
+                  className={`p-1.5 rounded-full transition-colors ${
+                    gridCols === 3 ? 'bg-black text-white' : 'text-neutral-400 hover:text-black'
+                  }`}
+                  aria-label="3 колонки"
+                >
+                  <Grid2X2 className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => setGridCols(4)}
+                  className={`p-1.5 rounded-full transition-colors ${
+                    gridCols === 4 ? 'bg-black text-white' : 'text-neutral-400 hover:text-black'
+                  }`}
+                  aria-label="4 колонки"
+                >
+                  <LayoutGrid className="w-4 h-4" />
+                </button>
               </div>
             </div>
           </div>
-        </section>
 
-        {/* ── MAIN PRODUCTS GRID ── */}
-        <section className="pt-6 px-4 md:px-8 max-w-6xl mx-auto">
-          {filteredProducts.length === 0 ? (
-            /* Empty Filter Results */
-            <div className="bg-white rounded-3xl p-12 text-center space-y-4 border border-neutral-200/80 max-w-md mx-auto my-8">
-              <div className="w-14 h-14 rounded-full bg-[#F9F9F8] flex items-center justify-center mx-auto text-neutral-400 border border-neutral-200">
-                <Search className="w-6 h-6" />
-              </div>
-              <h3 className="font-display text-2xl uppercase tracking-wider text-neutral-900">НИЧЕГО НЕ НАЙДЕНО</h3>
-              <p className="text-xs text-neutral-500">
-                Попробуйте изменить ценовой диапазон или сбросить фильтры.
-              </p>
-              <Button onClick={resetFilters} variant="outline" className="text-xs font-bold rounded-xl px-5">
-                Сбросить фильтры
-              </Button>
-            </div>
-          ) : (
-            <div className={`grid gap-4 sm:gap-6 ${
-              gridCols === 2
-                ? 'grid-cols-2'
-                : gridCols === 3
-                ? 'grid-cols-2 md:grid-cols-3'
-                : 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4'
-            }`}>
-              <AnimatePresence>
-                {filteredProducts.map((product) => (
-                  <motion.div
-                    key={product.id}
-                    layout
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <ProductCard product={product} className="w-full" />
-                  </motion.div>
-                ))}
-              </AnimatePresence>
+          {/* Smooth Inline Expandable Filter Bar (Zero Backdrop, Realtime Filter) */}
+          <AnimatePresence>
+            {isFilterPanelOpen && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.25, ease: 'easeInOut' }}
+                className="overflow-hidden"
+              >
+                <div className="max-w-6xl mx-auto mt-3.5 p-5 bg-white rounded-3xl border border-neutral-200/90 shadow-sm space-y-5 font-sans">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {/* Search Field */}
+                    <div className="space-y-2">
+                      <span className="text-[11px] font-extrabold uppercase tracking-wider text-neutral-900 block">Поиск</span>
+                      <div className="relative">
+                        <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
+                        <input
+                          type="text"
+                          value={searchQuery}
+                          onChange={(e) => setSearchQuery(e.target.value)}
+                          placeholder="Название..."
+                          className="w-full pl-10 pr-8 py-2 text-xs bg-neutral-100/90 rounded-xl focus:outline-none focus:ring-2 focus:ring-black font-sans"
+                        />
+                        {searchQuery && (
+                          <button
+                            onClick={() => setSearchQuery('')}
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-black"
+                          >
+                            <X className="w-3.5 h-3.5" />
+                          </button>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Brands */}
+                    <div className="space-y-2">
+                      <span className="text-[11px] font-extrabold uppercase tracking-wider text-neutral-900 block">Бренд</span>
+                      <div className="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto no-scrollbar">
+                        {brandsList.map((brand) => {
+                          const isSelected = selectedBrand === brand;
+                          return (
+                            <button
+                              key={brand}
+                              onClick={() => setSelectedBrand(brand)}
+                              className={`px-3 py-1 rounded-xl text-xs font-bold transition-all border ${
+                                isSelected
+                                  ? 'bg-black text-white border-black'
+                                  : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200 border-neutral-200'
+                              }`}
+                            >
+                              {brand}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    {/* Price Slider & Manual Number Inputs */}
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between text-[11px]">
+                        <span className="font-extrabold uppercase tracking-wider text-neutral-900">Стоимость (₽)</span>
+                        <span className="font-extrabold text-black font-mono">до {priceRange.toLocaleString('ru-RU')} ₽</span>
+                      </div>
+
+                      {/* Manual Price Inputs */}
+                      <div className="flex items-center gap-2">
+                        <div className="flex-1 relative">
+                          <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[10px] font-bold text-neutral-400 font-sans">от</span>
+                          <input
+                            type="number"
+                            min={0}
+                            max={priceRange}
+                            value={minPrice}
+                            onChange={(e) => setMinPrice(Number(e.target.value))}
+                            placeholder="0"
+                            className="w-full pl-7 pr-2 py-1.5 text-xs bg-neutral-100/90 rounded-xl focus:outline-none focus:ring-2 focus:ring-black font-mono font-bold"
+                          />
+                        </div>
+                        <span className="text-neutral-300 font-bold">—</span>
+                        <div className="flex-1 relative">
+                          <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[10px] font-bold text-neutral-400 font-sans">до</span>
+                          <input
+                            type="number"
+                            min={minPrice}
+                            max={20000}
+                            value={priceRange}
+                            onChange={(e) => setPriceRange(Number(e.target.value))}
+                            placeholder="20000"
+                            className="w-full pl-7 pr-2 py-1.5 text-xs bg-neutral-100/90 rounded-xl focus:outline-none focus:ring-2 focus:ring-black font-mono font-bold"
+                          />
+                        </div>
+                      </div>
+
+                      <input
+                        type="range"
+                        min={1000}
+                        max={20000}
+                        step={500}
+                        value={priceRange}
+                        onChange={(e) => setPriceRange(Number(e.target.value))}
+                        className="w-full accent-black cursor-pointer pt-1"
+                      />
+                    </div>
+
+                    {/* Size Selector */}
+                    <div className="space-y-2">
+                      <span className="text-[11px] font-extrabold uppercase tracking-wider text-neutral-900 block">Размер</span>
+                      <div className="flex flex-wrap gap-1.5">
+                        <button
+                          onClick={() => setSelectedSize('All')}
+                          className={`px-2.5 py-1 rounded-lg text-xs font-bold border transition-all ${
+                            selectedSize === 'All'
+                              ? 'bg-black text-white border-black'
+                              : 'bg-neutral-100 text-neutral-700 border-neutral-200 hover:bg-neutral-200'
+                          }`}
+                        >
+                          Все
+                        </button>
+                        {sizesList.map((sz) => (
+                          <button
+                            key={sz}
+                            onClick={() => setSelectedSize(sz)}
+                            className={`px-2.5 py-1 rounded-lg text-xs font-bold border transition-all ${
+                              selectedSize === sz
+                                ? 'bg-black text-white border-black'
+                                : 'bg-neutral-100 text-neutral-700 border-neutral-200 hover:bg-neutral-200'
+                            }`}
+                          >
+                            {sz}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Options & Reset Footer */}
+                  <div className="flex items-center justify-between pt-3 border-t border-neutral-100 text-xs">
+                    <label className="flex items-center gap-2 cursor-pointer select-none">
+                      <input
+                        type="checkbox"
+                        checked={onlySale}
+                        onChange={(e) => setOnlySale(e.target.checked)}
+                        className="w-4 h-4 accent-black rounded cursor-pointer"
+                      />
+                      <span className="font-extrabold text-neutral-900">Только товары со скидкой</span>
+                    </label>
+
+                    <button
+                      onClick={resetFilters}
+                      className="flex items-center gap-1 font-bold text-neutral-500 hover:text-black transition-colors"
+                    >
+                      <RotateCcw className="w-3.5 h-3.5" />
+                      <span>Сбросить фильтры</span>
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* Content Workspace */}
+        <div className="max-w-6xl mx-auto px-4 md:px-8 pt-6">
+          {/* Active Filter Chips */}
+          {activeFilterCount > 0 && (
+            <div className="flex flex-wrap items-center gap-2 mb-6 pb-4 border-b border-neutral-200/80">
+              <span className="text-[11px] font-bold text-neutral-400 uppercase tracking-wider">Активные фильтры:</span>
+
+              {selectedCategory !== 'all' && (
+                <span className="px-3.5 py-1 bg-white text-black text-xs font-bold rounded-full border border-neutral-300 flex items-center gap-1.5 shadow-2xs">
+                  Категория: {categoryTabs.find((t) => t.id === selectedCategory)?.label}
+                  <X className="w-3 h-3 cursor-pointer hover:text-red-500 transition-colors" onClick={() => setSelectedCategory('all')} />
+                </span>
+              )}
+
+              {selectedBrand !== 'All' && (
+                <span className="px-3.5 py-1 bg-white text-black text-xs font-bold rounded-full border border-neutral-300 flex items-center gap-1.5 shadow-2xs">
+                  Бренд: {selectedBrand}
+                  <X className="w-3 h-3 cursor-pointer hover:text-red-500 transition-colors" onClick={() => setSelectedBrand('All')} />
+                </span>
+              )}
+
+              {selectedSize !== 'All' && (
+                <span className="px-3.5 py-1 bg-white text-black text-xs font-bold rounded-full border border-neutral-300 flex items-center gap-1.5 shadow-2xs">
+                  Размер: {selectedSize}
+                  <X className="w-3 h-3 cursor-pointer hover:text-red-500 transition-colors" onClick={() => setSelectedSize('All')} />
+                </span>
+              )}
+
+              {onlySale && (
+                <span className="px-3.5 py-1 bg-white text-black text-xs font-bold rounded-full border border-neutral-300 flex items-center gap-1.5 shadow-2xs">
+                  Только скидки
+                  <X className="w-3 h-3 cursor-pointer hover:text-red-500 transition-colors" onClick={() => setOnlySale(false)} />
+                </span>
+              )}
+
+              <button
+                onClick={resetFilters}
+                className="text-xs font-bold text-neutral-500 hover:text-black underline ml-2 transition-colors"
+              >
+                Сбросить всё
+              </button>
             </div>
           )}
-        </section>
+
+          {/* Full-Bleed Products Grid */}
+          <div>
+            {filteredProducts.length === 0 ? (
+              <div className="bg-white rounded-3xl p-12 text-center space-y-4 border border-neutral-200/80 shadow-2xs">
+                <div className="w-14 h-14 rounded-full bg-neutral-100 flex items-center justify-center mx-auto text-neutral-400">
+                  <Search className="w-6 h-6" />
+                </div>
+                <h3 className="text-lg font-bold text-neutral-900 uppercase">Товары не найдены</h3>
+                <p className="text-xs text-neutral-500 max-w-xs mx-auto">
+                  К сожалению, по выбранным критериям ничего не найдено. Попробуйте сбросить параметры.
+                </p>
+                <Button onClick={resetFilters} variant="outline" className="text-xs font-bold rounded-xl px-6 py-2.5">
+                  Сбросить все фильтры
+                </Button>
+              </div>
+            ) : (
+              <div
+                className={`grid gap-4 sm:gap-6 ${
+                  gridCols === 4
+                    ? 'grid-cols-2 sm:grid-cols-3 md:grid-cols-4'
+                    : 'grid-cols-2 sm:grid-cols-3 md:grid-cols-3'
+                }`}
+              >
+                {filteredProducts.map((product) => (
+                  <ProductCard key={product.id} product={product} />
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
       </main>
+
+      {/* Visual Category Selector Modal */}
+      <AnimatePresence>
+        {isCategoryModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsCategoryModalOpen(false)}
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            />
+
+            {/* Modal Box */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ duration: 0.25 }}
+              className="relative z-10 w-full max-w-2xl bg-[#F9F9F8] rounded-3xl p-6 border border-neutral-200 shadow-2xl space-y-5 max-h-[85vh] overflow-y-auto no-scrollbar font-sans"
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between border-b border-neutral-200/80 pb-4">
+                <div>
+                  <span className="text-[10px] font-extrabold uppercase tracking-widest text-neutral-400 font-mono block">
+                    VISUAL CATEGORY SELECTOR
+                  </span>
+                  <h3 className="font-display text-2xl sm:text-3xl text-[#0D0E10] uppercase">
+                    ВЫБЕРИТЕ КАТЕГОРИЮ
+                  </h3>
+                </div>
+                <button
+                  onClick={() => setIsCategoryModalOpen(false)}
+                  className="w-9 h-9 rounded-full bg-white text-neutral-500 hover:text-black border border-neutral-200 flex items-center justify-center transition-colors shadow-2xs"
+                  aria-label="Закрыть"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              {/* Grid of Visual Category Cards */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3.5">
+                {visualCategoryCards.map((cat) => {
+                  const isSelected = selectedCategory === cat.id;
+                  return (
+                    <button
+                      key={cat.id}
+                      onClick={() => {
+                        setSelectedCategory(cat.id);
+                        setIsCategoryModalOpen(false);
+                      }}
+                      className={`relative group rounded-2xl p-3.5 border transition-all text-left flex flex-col justify-between h-48 overflow-hidden ${
+                        isSelected
+                          ? 'bg-black text-white border-black shadow-md scale-[1.02]'
+                          : 'bg-white text-neutral-900 border-neutral-200 hover:border-neutral-400 hover:shadow-sm'
+                      }`}
+                    >
+                      <div className="flex items-start justify-between relative z-10">
+                        <span className={`text-[9px] font-extrabold uppercase tracking-wider font-mono px-2 py-0.5 rounded-md ${
+                          isSelected ? 'bg-white/20 text-white' : 'bg-neutral-100 text-neutral-500'
+                        }`}>
+                          {cat.label}
+                        </span>
+                        {isSelected && (
+                          <span className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
+                        )}
+                      </div>
+
+                      <div className="my-auto py-2 flex items-center justify-center relative z-0">
+                        <img
+                          src={cat.image}
+                          alt={cat.name}
+                          className="w-20 h-20 object-contain group-hover:scale-110 transition-transform duration-300"
+                        />
+                      </div>
+
+                      <div className="relative z-10 pt-1">
+                        <h4 className="font-display text-xl uppercase tracking-wide leading-none">
+                          {cat.name}
+                        </h4>
+                        <span className={`text-[10px] font-mono font-bold block mt-0.5 ${
+                          isSelected ? 'text-neutral-300' : 'text-neutral-400'
+                        }`}>
+                          {cat.count}
+                        </span>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
 
       <Footer />
       <BottomNav />
