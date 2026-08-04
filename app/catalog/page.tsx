@@ -184,7 +184,7 @@ export default function CatalogPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState<'popular' | 'price-asc' | 'price-desc' | 'rating'>('popular');
   const [isFilterPanelOpen, setIsFilterPanelOpen] = useState(false);
-  const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
+  const [isCategoryDrawerOpen, setIsCategoryDrawerOpen] = useState(false);
   const [gridCols, setGridCols] = useState<3 | 4>(4);
 
   // Active filter count
@@ -296,14 +296,19 @@ export default function CatalogPage() {
         {/* Refined Sticky Controls Bar */}
         <div className="sticky top-14 z-30 bg-[#F9F9F8]/95 backdrop-blur-md border-b border-neutral-200/80 py-3.5 px-4 md:px-8">
           <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
-            {/* Category Quick Pills + Visual Cards Button */}
+            {/* Category Quick Pills + Visual Drawer Toggle Button */}
             <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5">
               <button
-                onClick={() => setIsCategoryModalOpen(true)}
-                className="px-3.5 py-2 rounded-full text-xs font-black whitespace-nowrap bg-black text-white hover:bg-neutral-800 transition-all border border-black shadow-sm flex items-center gap-1.5 shrink-0"
+                onClick={() => setIsCategoryDrawerOpen(!isCategoryDrawerOpen)}
+                className={`px-3.5 py-2 rounded-full text-xs font-black whitespace-nowrap transition-all border shadow-2xs flex items-center gap-1.5 shrink-0 ${
+                  isCategoryDrawerOpen
+                    ? 'bg-black text-white border-black shadow-sm'
+                    : 'bg-white text-neutral-900 border-neutral-200 hover:border-neutral-400'
+                }`}
               >
-                <LayoutGrid className="w-3.5 h-3.5 text-white" />
-                <span>ВСЕ КАТЕГОРИИ (КАРТОЧКИ)</span>
+                <LayoutGrid className="w-3.5 h-3.5" />
+                <span>КАРТОЧКИ КАТЕГОРИЙ</span>
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isCategoryDrawerOpen ? 'rotate-180' : ''}`} />
               </button>
 
               <div className="w-[1px] h-5 bg-neutral-300 mx-0.5 shrink-0" />
@@ -313,7 +318,10 @@ export default function CatalogPage() {
                 return (
                   <button
                     key={tab.id}
-                    onClick={() => setSelectedCategory(tab.id)}
+                    onClick={() => {
+                      setSelectedCategory(tab.id);
+                      setIsCategoryDrawerOpen(false);
+                    }}
                     className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all border ${
                       isActive
                         ? 'bg-black text-white border-black shadow-sm'
@@ -389,6 +397,83 @@ export default function CatalogPage() {
               </div>
             </div>
           </div>
+
+          {/* Smooth Inline Visual Category Gallery Shelf */}
+          <AnimatePresence>
+            {isCategoryDrawerOpen && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.25, ease: 'easeInOut' }}
+                className="overflow-hidden"
+              >
+                <div className="max-w-6xl mx-auto mt-3.5 p-4 bg-white rounded-3xl border border-neutral-200/90 shadow-sm space-y-3 font-sans">
+                  <div className="flex items-center justify-between px-1">
+                    <span className="text-[10px] font-extrabold uppercase tracking-widest text-neutral-400 font-mono">
+                      ВЫБЕРИТЕ КАТЕГОРИЮ ИЗ ГАЛЕРЕИ
+                    </span>
+                    <button
+                      onClick={() => setIsCategoryDrawerOpen(false)}
+                      className="text-xs font-bold text-neutral-400 hover:text-black font-mono"
+                    >
+                      Свернуть ✕
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
+                    {visualCategoryCards.map((cat) => {
+                      const isSelected = selectedCategory === cat.id;
+                      return (
+                        <button
+                          key={cat.id}
+                          onClick={() => {
+                            setSelectedCategory(cat.id);
+                            setIsCategoryDrawerOpen(false);
+                          }}
+                          className={`relative group rounded-2xl p-3 border transition-all text-left flex flex-col justify-between h-40 overflow-hidden ${
+                            isSelected
+                              ? 'bg-black text-white border-black shadow-md scale-[1.02]'
+                              : 'bg-[#F9F9F8] text-neutral-900 border-neutral-200 hover:border-neutral-400 hover:shadow-2xs hover:bg-white'
+                          }`}
+                        >
+                          <div className="flex items-start justify-between relative z-10">
+                            <span className={`text-[8px] font-extrabold uppercase tracking-wider font-mono px-1.5 py-0.5 rounded ${
+                              isSelected ? 'bg-white/20 text-white' : 'bg-neutral-200/70 text-neutral-600'
+                            }`}>
+                              {cat.label}
+                            </span>
+                            {isSelected && (
+                              <span className="w-2 h-2 rounded-full bg-emerald-400" />
+                            )}
+                          </div>
+
+                          <div className="my-auto py-1 flex items-center justify-center relative z-0">
+                            <img
+                              src={cat.image}
+                              alt={cat.name}
+                              className="w-16 h-16 object-contain group-hover:scale-110 transition-transform duration-300"
+                            />
+                          </div>
+
+                          <div className="relative z-10 pt-1">
+                            <h4 className="font-display text-base uppercase tracking-wide leading-none">
+                              {cat.name}
+                            </h4>
+                            <span className={`text-[9px] font-mono font-bold block mt-0.5 ${
+                              isSelected ? 'text-neutral-300' : 'text-neutral-400'
+                            }`}>
+                              {cat.count}
+                            </span>
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {/* Smooth Inline Expandable Filter Bar (Zero Backdrop, Realtime Filter) */}
           <AnimatePresence>
@@ -627,101 +712,6 @@ export default function CatalogPage() {
           </div>
         </div>
       </main>
-
-      {/* Visual Category Selector Modal */}
-      <AnimatePresence>
-        {isCategoryModalOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            {/* Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsCategoryModalOpen(false)}
-              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-            />
-
-            {/* Modal Box */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              transition={{ duration: 0.25 }}
-              className="relative z-10 w-full max-w-2xl bg-[#F9F9F8] rounded-3xl p-6 border border-neutral-200 shadow-2xl space-y-5 max-h-[85vh] overflow-y-auto no-scrollbar font-sans"
-            >
-              {/* Header */}
-              <div className="flex items-center justify-between border-b border-neutral-200/80 pb-4">
-                <div>
-                  <span className="text-[10px] font-extrabold uppercase tracking-widest text-neutral-400 font-mono block">
-                    VISUAL CATEGORY SELECTOR
-                  </span>
-                  <h3 className="font-display text-2xl sm:text-3xl text-[#0D0E10] uppercase">
-                    ВЫБЕРИТЕ КАТЕГОРИЮ
-                  </h3>
-                </div>
-                <button
-                  onClick={() => setIsCategoryModalOpen(false)}
-                  className="w-9 h-9 rounded-full bg-white text-neutral-500 hover:text-black border border-neutral-200 flex items-center justify-center transition-colors shadow-2xs"
-                  aria-label="Закрыть"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              </div>
-
-              {/* Grid of Visual Category Cards */}
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3.5">
-                {visualCategoryCards.map((cat) => {
-                  const isSelected = selectedCategory === cat.id;
-                  return (
-                    <button
-                      key={cat.id}
-                      onClick={() => {
-                        setSelectedCategory(cat.id);
-                        setIsCategoryModalOpen(false);
-                      }}
-                      className={`relative group rounded-2xl p-3.5 border transition-all text-left flex flex-col justify-between h-48 overflow-hidden ${
-                        isSelected
-                          ? 'bg-black text-white border-black shadow-md scale-[1.02]'
-                          : 'bg-white text-neutral-900 border-neutral-200 hover:border-neutral-400 hover:shadow-sm'
-                      }`}
-                    >
-                      <div className="flex items-start justify-between relative z-10">
-                        <span className={`text-[9px] font-extrabold uppercase tracking-wider font-mono px-2 py-0.5 rounded-md ${
-                          isSelected ? 'bg-white/20 text-white' : 'bg-neutral-100 text-neutral-500'
-                        }`}>
-                          {cat.label}
-                        </span>
-                        {isSelected && (
-                          <span className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
-                        )}
-                      </div>
-
-                      <div className="my-auto py-2 flex items-center justify-center relative z-0">
-                        <img
-                          src={cat.image}
-                          alt={cat.name}
-                          className="w-20 h-20 object-contain group-hover:scale-110 transition-transform duration-300"
-                        />
-                      </div>
-
-                      <div className="relative z-10 pt-1">
-                        <h4 className="font-display text-xl uppercase tracking-wide leading-none">
-                          {cat.name}
-                        </h4>
-                        <span className={`text-[10px] font-mono font-bold block mt-0.5 ${
-                          isSelected ? 'text-neutral-300' : 'text-neutral-400'
-                        }`}>
-                          {cat.count}
-                        </span>
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
 
       <Footer />
       <BottomNav />
