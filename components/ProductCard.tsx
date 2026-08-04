@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Heart, ShoppingBag } from 'lucide-react';
 
@@ -33,7 +34,9 @@ export default function ProductCard({
 
   const isFav = onFavoriteToggle ? initialIsFavorite : internalIsFavorite;
 
-  const handleFavoriteClick = () => {
+  const handleFavoriteClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
     if (onRemove) {
       onRemove();
     } else if (onFavoriteToggle) {
@@ -57,16 +60,18 @@ export default function ProductCard({
     >
       {/* Product Image Container 3:4 Aspect Ratio */}
       <div className="relative w-full aspect-[3/4] rounded-2xl bg-neutral-200/50 overflow-hidden border border-neutral-200/80 shadow-2xs">
-        <img
-          src={isHovered && product.secondaryImage ? product.secondaryImage : product.image}
-          alt={product.name}
-          className="w-full h-full object-cover object-center transition-all duration-500 group-hover:scale-105"
-          loading="lazy"
-        />
+        <Link href={`/product/${product.id}`} className="block w-full h-full">
+          <img
+            src={isHovered && product.secondaryImage ? product.secondaryImage : product.image}
+            alt={product.name}
+            className="w-full h-full object-cover object-center transition-all duration-500 group-hover:scale-105"
+            loading="lazy"
+          />
+        </Link>
 
         {/* Badge if exists */}
         {product.badge && (
-          <span className="absolute top-2.5 left-2.5 px-2.5 py-0.5 bg-black text-white text-[10px] font-extrabold uppercase tracking-wider rounded-md font-sans">
+          <span className="absolute top-2.5 left-2.5 px-2.5 py-0.5 bg-black text-white text-[10px] font-extrabold uppercase tracking-wider rounded-md font-sans pointer-events-none z-10">
             {product.badge}
           </span>
         )}
@@ -76,7 +81,7 @@ export default function ProductCard({
           whileTap={{ scale: 0.85 }}
           onClick={handleFavoriteClick}
           aria-label={onRemove ? 'Удалить из избранного' : isFav ? 'Убрать из избранного' : 'Добавить в избранное'}
-          className={`absolute top-2.5 right-2.5 min-w-[36px] min-h-[36px] w-9 h-9 rounded-full flex items-center justify-center shadow-md transition-all ${
+          className={`absolute top-2.5 right-2.5 min-w-[36px] min-h-[36px] w-9 h-9 rounded-full flex items-center justify-center shadow-md transition-all z-10 ${
             onRemove
               ? 'bg-white/95 text-neutral-500 hover:bg-red-500 hover:text-white border border-neutral-200'
               : isFav
@@ -94,14 +99,14 @@ export default function ProductCard({
 
       {/* Info & Add to Cart */}
       <div className="flex items-center justify-between px-1 gap-2">
-        <div className="flex flex-col min-w-0 flex-1">
+        <Link href={`/product/${product.id}`} className="flex flex-col min-w-0 flex-1 group-hover:text-neutral-600 transition-colors">
           <h3 className="text-sm md:text-base font-bold text-neutral-900 truncate leading-snug tracking-tight">
             {product.name}
           </h3>
           <span className="text-sm md:text-base font-black text-black leading-tight font-mono">
             {formatPrice(product.price)}
           </span>
-        </div>
+        </Link>
 
         <motion.button
           whileTap={{ scale: 0.88 }}
