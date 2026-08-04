@@ -162,13 +162,13 @@ const categoryTabs = [
   { id: 'bags', label: 'СУМКИ' },
 ];
 
-const visualCategoryCards = [
-  { id: 'all', name: 'Весь каталог', label: 'ALL ITEMS', count: '300+ товаров', image: '/images/hero-1.png' },
-  { id: 'clothing', name: 'Одежда', label: 'CLOTHING', count: '120+ моделей', image: '/images/cat-clothing.png' },
-  { id: 'sneakers', name: 'Кроссовки', label: 'SNEAKERS', count: '80+ моделей', image: '/images/cat-sneakers.png' },
-  { id: 'keychains', name: 'Брелоки', label: 'KEYCHAINS', count: '40+ моделей', image: '/images/cat-keychains.png' },
-  { id: 'accessories', name: 'Аксессуары', label: 'ACCESSORIES', count: '60+ моделей', image: '/images/cat-accessories.png' },
-  { id: 'bags', name: 'Сумки', label: 'BAGS', count: '30+ моделей', image: '/images/cat-bags.png' },
+const luxuryCategoryItems = [
+  { id: 'all', num: '01', title: 'ВЕСЬ КАТАЛОГ', sub: 'Полный ассортимент одежды, кроссовок и аксессуаров', count: '300+ позиций', image: '/images/hero-1.png', tag: 'ALL' },
+  { id: 'clothing', num: '02', title: 'ОДЕЖДА', sub: 'Худи, оверсайз футболки, лонгсливы и штаны', count: '120+ моделей', image: '/images/cat-clothing.png', tag: 'CLOTHING' },
+  { id: 'sneakers', num: '03', title: 'КРОССОВКИ', sub: 'Редкие релизы и культовые модели силуэтов', count: '80+ моделей', image: '/images/cat-sneakers.png', tag: 'SNEAKERS' },
+  { id: 'keychains', num: '04', title: 'БРЕЛОКИ', sub: 'Металлические цепочки и подвесы SOLVE Star', count: '40+ моделей', image: '/images/cat-keychains.png', tag: 'KEYCHAINS' },
+  { id: 'accessories', num: '05', title: 'АКСЕССУАРЫ', sub: 'Кепки, шарфы, атрибутика и мелочи', count: '60+ моделей', image: '/images/cat-accessories.png', tag: 'ACCESSORIES' },
+  { id: 'bags', num: '06', title: 'СУМКИ', sub: 'Модульные кроссбоди и вместительные шоперы', count: '30+ моделей', image: '/images/cat-bags.png', tag: 'BAGS' },
 ];
 
 const brandsList = ['All', 'Solve', 'Nike', 'New Balance', 'Stussy', 'Supreme', 'Off-White'];
@@ -184,7 +184,7 @@ export default function CatalogPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState<'popular' | 'price-asc' | 'price-desc' | 'rating'>('popular');
   const [isFilterPanelOpen, setIsFilterPanelOpen] = useState(false);
-  const [isCategoryDrawerOpen, setIsCategoryDrawerOpen] = useState(false);
+  const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
   const [gridCols, setGridCols] = useState<3 | 4>(4);
 
   // Active filter count
@@ -296,19 +296,14 @@ export default function CatalogPage() {
         {/* Refined Sticky Controls Bar */}
         <div className="sticky top-14 z-30 bg-[#F9F9F8]/95 backdrop-blur-md border-b border-neutral-200/80 py-3.5 px-4 md:px-8">
           <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
-            {/* Category Quick Pills + Visual Drawer Toggle Button */}
+            {/* Category Quick Pills + Luxury Editorial Modal Button */}
             <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5">
               <button
-                onClick={() => setIsCategoryDrawerOpen(!isCategoryDrawerOpen)}
-                className={`px-3.5 py-2 rounded-full text-xs font-black whitespace-nowrap transition-all border shadow-2xs flex items-center gap-1.5 shrink-0 ${
-                  isCategoryDrawerOpen
-                    ? 'bg-black text-white border-black shadow-sm'
-                    : 'bg-white text-neutral-900 border-neutral-200 hover:border-neutral-400'
-                }`}
+                onClick={() => setIsCategoryModalOpen(true)}
+                className="px-4 py-2 rounded-full text-xs font-black whitespace-nowrap bg-black text-white hover:bg-neutral-800 transition-all border border-black shadow-sm flex items-center gap-2 shrink-0 uppercase tracking-wider"
               >
-                <LayoutGrid className="w-3.5 h-3.5" />
-                <span>КАРТОЧКИ КАТЕГОРИЙ</span>
-                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isCategoryDrawerOpen ? 'rotate-180' : ''}`} />
+                <LayoutGrid className="w-3.5 h-3.5 text-white" />
+                <span>ВСЕ КАТЕГОРИИ ✦</span>
               </button>
 
               <div className="w-[1px] h-5 bg-neutral-300 mx-0.5 shrink-0" />
@@ -318,10 +313,7 @@ export default function CatalogPage() {
                 return (
                   <button
                     key={tab.id}
-                    onClick={() => {
-                      setSelectedCategory(tab.id);
-                      setIsCategoryDrawerOpen(false);
-                    }}
+                    onClick={() => setSelectedCategory(tab.id)}
                     className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all border ${
                       isActive
                         ? 'bg-black text-white border-black shadow-sm'
@@ -398,82 +390,6 @@ export default function CatalogPage() {
             </div>
           </div>
 
-          {/* Smooth Inline Visual Category Gallery Shelf */}
-          <AnimatePresence>
-            {isCategoryDrawerOpen && (
-              <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: 'auto', opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.25, ease: 'easeInOut' }}
-                className="overflow-hidden"
-              >
-                <div className="max-w-6xl mx-auto mt-3.5 p-4 bg-white rounded-3xl border border-neutral-200/90 shadow-sm space-y-3 font-sans">
-                  <div className="flex items-center justify-between px-1">
-                    <span className="text-[10px] font-extrabold uppercase tracking-widest text-neutral-400 font-mono">
-                      ВЫБЕРИТЕ КАТЕГОРИЮ ИЗ ГАЛЕРЕИ
-                    </span>
-                    <button
-                      onClick={() => setIsCategoryDrawerOpen(false)}
-                      className="text-xs font-bold text-neutral-400 hover:text-black font-mono"
-                    >
-                      Свернуть ✕
-                    </button>
-                  </div>
-
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
-                    {visualCategoryCards.map((cat) => {
-                      const isSelected = selectedCategory === cat.id;
-                      return (
-                        <button
-                          key={cat.id}
-                          onClick={() => {
-                            setSelectedCategory(cat.id);
-                            setIsCategoryDrawerOpen(false);
-                          }}
-                          className={`relative group rounded-2xl p-3 border transition-all text-left flex flex-col justify-between h-40 overflow-hidden ${
-                            isSelected
-                              ? 'bg-black text-white border-black shadow-md scale-[1.02]'
-                              : 'bg-[#F9F9F8] text-neutral-900 border-neutral-200 hover:border-neutral-400 hover:shadow-2xs hover:bg-white'
-                          }`}
-                        >
-                          <div className="flex items-start justify-between relative z-10">
-                            <span className={`text-[8px] font-extrabold uppercase tracking-wider font-mono px-1.5 py-0.5 rounded ${
-                              isSelected ? 'bg-white/20 text-white' : 'bg-neutral-200/70 text-neutral-600'
-                            }`}>
-                              {cat.label}
-                            </span>
-                            {isSelected && (
-                              <span className="w-2 h-2 rounded-full bg-emerald-400" />
-                            )}
-                          </div>
-
-                          <div className="my-auto py-1 flex items-center justify-center relative z-0">
-                            <img
-                              src={cat.image}
-                              alt={cat.name}
-                              className="w-16 h-16 object-contain group-hover:scale-110 transition-transform duration-300"
-                            />
-                          </div>
-
-                          <div className="relative z-10 pt-1">
-                            <h4 className="font-display text-base uppercase tracking-wide leading-none">
-                              {cat.name}
-                            </h4>
-                            <span className={`text-[9px] font-mono font-bold block mt-0.5 ${
-                              isSelected ? 'text-neutral-300' : 'text-neutral-400'
-                            }`}>
-                              {cat.count}
-                            </span>
-                          </div>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
 
           {/* Smooth Inline Expandable Filter Bar (Zero Backdrop, Realtime Filter) */}
           <AnimatePresence>
@@ -712,6 +628,125 @@ export default function CatalogPage() {
           </div>
         </div>
       </main>
+
+      {/* Luxury Editorial List Category Modal Popup */}
+      <AnimatePresence>
+        {isCategoryModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsCategoryModalOpen(false)}
+              className="absolute inset-0 bg-black/75 backdrop-blur-md"
+            />
+
+            {/* Modal Box */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ duration: 0.25 }}
+              className="relative z-10 w-full max-w-3xl bg-[#F9F9F8] rounded-3xl p-6 sm:p-8 border border-neutral-200 shadow-2xl space-y-6 max-h-[88vh] overflow-y-auto no-scrollbar font-sans"
+            >
+              {/* Modal Header */}
+              <div className="flex items-center justify-between border-b border-neutral-200 pb-4">
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-neutral-400 font-mono">
+                      SOLVE EDITORIAL INDEX 2026
+                    </span>
+                    <span className="px-2 py-0.5 bg-black text-white text-[9px] font-extrabold font-mono rounded">
+                      6 РАЗДЕЛОВ
+                    </span>
+                  </div>
+                  <h3 className="font-display text-3xl sm:text-4xl text-[#0D0E10] uppercase tracking-wide leading-none">
+                    ВЫБЕРИТЕ КАТЕГОРИЮ
+                  </h3>
+                </div>
+
+                <button
+                  onClick={() => setIsCategoryModalOpen(false)}
+                  className="w-10 h-10 rounded-full bg-white text-neutral-600 hover:text-black border border-neutral-200 flex items-center justify-center transition-all shadow-2xs hover:scale-105 shrink-0"
+                  aria-label="Закрыть окно"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Editorial List Rows */}
+              <div className="space-y-3">
+                {luxuryCategoryItems.map((item) => {
+                  const isSelected = selectedCategory === item.id;
+                  return (
+                    <div
+                      key={item.id}
+                      onClick={() => {
+                        setSelectedCategory(item.id);
+                        setIsCategoryModalOpen(false);
+                      }}
+                      className={`group flex items-center justify-between p-4 sm:p-5 rounded-2xl border transition-all cursor-pointer shadow-2xs ${
+                        isSelected
+                          ? 'bg-black text-white border-black shadow-md'
+                          : 'bg-white text-[#0D0E10] border-neutral-200/90 hover:border-black hover:bg-neutral-900 hover:text-white'
+                      }`}
+                    >
+                      {/* Left: Number & Titles */}
+                      <div className="flex items-center gap-4 min-w-0">
+                        <span className={`font-mono text-sm font-extrabold shrink-0 ${
+                          isSelected ? 'text-neutral-400' : 'text-neutral-400 group-hover:text-neutral-400'
+                        }`}>
+                          {item.num}
+                        </span>
+
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-2">
+                            <h4 className="font-display text-2xl sm:text-3xl uppercase tracking-wider leading-none">
+                              {item.title}
+                            </h4>
+                            {isSelected && (
+                              <span className="w-2 h-2 rounded-full bg-emerald-400 shrink-0" />
+                            )}
+                          </div>
+                          <p className={`text-xs mt-1 truncate ${
+                            isSelected ? 'text-neutral-300' : 'text-neutral-500 group-hover:text-neutral-300'
+                          }`}>
+                            {item.sub}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Right: Count, Image Preview, Arrow */}
+                      <div className="flex items-center gap-4 shrink-0 pl-2">
+                        <span className={`hidden sm:inline-block font-mono text-xs font-bold ${
+                          isSelected ? 'text-neutral-300' : 'text-neutral-500 group-hover:text-neutral-300'
+                        }`}>
+                          {item.count}
+                        </span>
+
+                        <div className="w-14 h-14 rounded-xl bg-[#EBECEE] border border-neutral-200 overflow-hidden flex items-center justify-center p-1.5 shrink-0 group-hover:bg-white/10 group-hover:border-white/20 transition-colors">
+                          <img
+                            src={item.image}
+                            alt={item.title}
+                            className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300"
+                          />
+                        </div>
+
+                        <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-transform group-hover:translate-x-1 ${
+                          isSelected ? 'bg-white text-black' : 'bg-neutral-100 text-black group-hover:bg-white group-hover:text-black'
+                        }`}>
+                          <ChevronRight className="w-4 h-4" />
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
 
       <Footer />
       <BottomNav />
