@@ -410,14 +410,16 @@ export default function CartPage() {
                       </span>
                     </div>
 
-                    <motion.button
-                      whileTap={{ scale: 0.98 }}
-                      className="w-full bg-[#0D0E10] hover:bg-neutral-800 text-white font-extrabold text-xs py-4 rounded-2xl flex items-center justify-center gap-2 uppercase tracking-[0.12em] transition-colors shadow-md"
-                    >
-                      <Lock className="w-3.5 h-3.5" />
-                      <span>ОФОРМИТЬ ЗАКАЗ</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </motion.button>
+                    <Link href="/checkout" className="block w-full">
+                      <motion.button
+                        whileTap={{ scale: 0.98 }}
+                        className="w-full bg-[#0D0E10] hover:bg-neutral-800 text-white font-extrabold text-xs py-4 rounded-2xl flex items-center justify-center gap-2 uppercase tracking-[0.12em] transition-colors shadow-md"
+                      >
+                        <Lock className="w-3.5 h-3.5" />
+                        <span>ПЕРЕЙТИ К ОФОРМЛЕНИЮ</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </motion.button>
+                    </Link>
 
                     <p className="text-center text-neutral-400 text-[10px] font-mono">
                       НДС включён • Картой, СБП или Рассрочка
